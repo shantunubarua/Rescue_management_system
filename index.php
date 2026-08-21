@@ -117,6 +117,57 @@ elseif ($page === 'notification-delete') {
 
     handleDeleteNotification($conn, $id);
 }
+
+elseif ($page === 'witness-test') {
+
+    requireWitness();
+
+    require_once "models/WitnessModel.php";
+
+    $witness_id = $_SESSION['user']['id'];
+
+    $reports = getWitnessReports(
+        $conn,
+        $witness_id
+    );
+
+    echo "<h1>Witness Database Test</h1>";
+
+    echo "<p>Witness ID: " . (int)$witness_id . "</p>";
+
+    echo "<p>Reports found: " . count($reports) . "</p>";
+}
+
+elseif ($page === 'witness-report-create') {
+
+    requireWitness();
+
+    require_once "controllers/WitnessController.php";
+
+    $error = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $error = handleCreateWitnessReport($conn);
+    }
+
+    require_once "views/witness/create_report.php";
+}
+elseif ($page === 'witness-reports') {
+
+    requireWitness();
+
+    require_once "models/WitnessModel.php";
+
+    $witness_id = $_SESSION['user']['id'];
+
+    $reports = getWitnessReports(
+        $conn,
+        $witness_id
+    );
+
+    require_once "views/witness/reports.php";
+}
+
 else {
 
     echo "Page not found.";

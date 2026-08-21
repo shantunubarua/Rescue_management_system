@@ -42,7 +42,18 @@ function logoutUser()
             $params["secure"],
             $params["httponly"]
         );
+    
     }
 
     session_destroy();
+
+}
+
+function requireWitness()
+{
+    requireLogin();
+
+    if ($_SESSION['user']['role'] !== 'witness') {
+        die("Access denied.");
+    }
 }

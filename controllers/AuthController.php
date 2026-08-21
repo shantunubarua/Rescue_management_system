@@ -45,10 +45,17 @@ function loginUser()
 
     $_SESSION['user'] = $user;
 
-    if ($user['role'] === 'admin') {
-        header("Location: index.php?page=admin-dashboard");
-        exit;
-    }
+   if ($user['role'] === 'admin') {
+
+    header("Location: index.php?page=admin-dashboard");
+    exit;
+
+} elseif ($user['role'] === 'witness') {
+
+    header("Location: index.php?page=witness-test");
+    exit;
+
+}
 
     return "Invalid role.";
 }
