@@ -42,6 +42,7 @@ elseif ($page === 'notifications') {
 } elseif ($page === 'notification-create') {
 
     requireAdmin();
+    //g
 
     require_once "controllers/NotificationController.php";
 
