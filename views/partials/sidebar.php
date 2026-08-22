@@ -52,10 +52,10 @@ $role = $_SESSION['user']['role'] ?? '';
         <ul>
 
             <li>
-                <a href="index.php?page=witness-test">
-                    Dashboard
-                </a>
-            </li>
+    <a href="index.php?page=witness-dashboard">
+        Dashboard
+    </a>
+</li>
 
             <li>
                 <a href="index.php?page=witness-report-create">

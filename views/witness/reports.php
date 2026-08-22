@@ -7,16 +7,22 @@
     <h1>My Incident Reports</h1>
 
     <p>
+
         <a href="index.php?page=witness-report-create">
+
             Report New Incident
+
         </a>
+
     </p>
 
 
     <?php if (empty($reports)): ?>
 
         <p>
+
             You have not submitted any incident reports yet.
+
         </p>
 
     <?php else: ?>
@@ -26,12 +32,19 @@
             <thead>
 
                 <tr>
+
                     <th>ID</th>
+
                     <th>Title</th>
+
                     <th>Incident Type</th>
+
                     <th>Location</th>
+
                     <th>Incident Date</th>
+
                     <th>Status</th>
+
                 </tr>
 
             </thead>

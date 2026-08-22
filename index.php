@@ -159,25 +159,6 @@ elseif ($page === 'witness-dashboard') {
     require_once "views/witness/dashboard.php";
 }
 
-elseif ($page === 'witness-test') {
-
-    requireWitness();
-
-    require_once "models/WitnessModel.php";
-
-    $witness_id = $_SESSION['user']['id'];
-
-    $reports = getWitnessReports(
-        $conn,
-        $witness_id
-    );
-
-    echo "<h1>Witness Database Test</h1>";
-
-    echo "<p>Witness ID: " . (int)$witness_id . "</p>";
-
-    echo "<p>Reports found: " . count($reports) . "</p>";
-}
 
 elseif ($page === 'witness-report-create') {
 
