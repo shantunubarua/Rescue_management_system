@@ -39,7 +39,41 @@ elseif ($page === 'notifications') {
 
     require_once "views/admin/notifications/index.php";
 
-} elseif ($page === 'notification-create') {
+}
+elseif ($page === 'feedback') {
+
+    requireAdmin();
+
+    require_once "controllers/FeedbackController.php";
+
+    $error = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $error = handleUpdateFeedbackStatus($conn);
+    }
+
+    $feedback = loadAllFeedback($conn);
+
+    require_once "views/admin/feedback/index.php";
+}
+elseif ($page === 'rescue-reports') {
+
+    requireAdmin();
+
+    require_once "controllers/RescueReportController.php";
+
+    $error = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $error = handleUpdateRescueReportStatus($conn);
+    }
+
+    $reports = loadAllRescueReports($conn);
+
+    require_once "views/admin/rescue_reports/index.php";
+}
+
+ elseif ($page === 'notification-create') {
 
     requireAdmin();
     //g
@@ -117,6 +151,12 @@ elseif ($page === 'notification-delete') {
     }
 
     handleDeleteNotification($conn, $id);
+}
+elseif ($page === 'witness-dashboard') {
+
+    requireWitness();
+
+    require_once "views/witness/dashboard.php";
 }
 
 elseif ($page === 'witness-test') {

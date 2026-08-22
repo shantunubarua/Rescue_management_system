@@ -52,7 +52,7 @@ function loginUser()
 
 } elseif ($user['role'] === 'witness') {
 
-    header("Location: index.php?page=witness-test");
+    header("Location: index.php?page=witness-dashboard");
     exit;
 
 }
