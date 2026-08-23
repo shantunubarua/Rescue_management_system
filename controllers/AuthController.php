@@ -56,6 +56,12 @@ function loginUser()
     exit;
 
 }
+elseif ($user['role'] === 'help_seeker') {
+
+    header("Location: index.php?page=helpseeker-dashboard");
+    exit;
+
+}
 
     return "Invalid role.";
 }

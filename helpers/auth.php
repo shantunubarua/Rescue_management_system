@@ -57,3 +57,11 @@ function requireWitness()
         die("Access denied.");
     }
 }
+function requireHelpSeeker()
+{
+    requireLogin();
+
+    if ($_SESSION['user']['role'] !== 'help_seeker') {
+        die("Access denied.");
+    }
+}

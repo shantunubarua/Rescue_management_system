@@ -159,7 +159,12 @@ elseif ($page === 'witness-dashboard') {
     require_once "views/witness/dashboard.php";
 }
 
+elseif ($page === 'helpseeker-dashboard') {
 
+    requireHelpSeeker();
+
+    require_once "views/helpseeker/dashboard.php";
+}
 elseif ($page === 'witness-report-create') {
 
     requireWitness();
