@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 22, 2026 at 11:39 AM
+-- Generation Time: Aug 24, 2026 at 06:53 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,35 @@ SET time_zone = "+00:00";
 --
 -- Database: `rescue_management_system`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `emergency_requests`
+--
+
+CREATE TABLE `emergency_requests` (
+  `id` int(11) NOT NULL,
+  `help_seeker_id` int(11) NOT NULL,
+  `emergency_type` varchar(50) NOT NULL,
+  `location` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `priority` enum('low','medium','high','critical') NOT NULL DEFAULT 'medium',
+  `victim_type` enum('self','other') NOT NULL DEFAULT 'self',
+  `victim_information` text DEFAULT NULL,
+  `victim_count` int(11) NOT NULL DEFAULT 1,
+  `contact_information` varchar(150) NOT NULL,
+  `status` enum('pending','assigned','ongoing','completed','cancelled') NOT NULL DEFAULT 'pending',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `emergency_requests`
+--
+
+INSERT INTO `emergency_requests` (`id`, `help_seeker_id`, `emergency_type`, `location`, `description`, `priority`, `victim_type`, `victim_information`, `victim_count`, `contact_information`, `status`, `created_at`, `updated_at`) VALUES
+(1, 3, 'medical', 'Mirpur', 'A person needs immediate medical assistance.', 'high', 'self', NULL, 1, '01300000000', 'pending', '2026-08-24 15:57:34', '2026-08-24 15:57:34');
 
 -- --------------------------------------------------------
 
@@ -100,7 +129,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `phone`, `password`, `role`, `created_at`, `updated_at`) VALUES
 (1, 'System Admin', 'admin@rescue.com', '01700000000', '$2y$10$0TxWWt5Dy4zyekIjW/gJYefYvGILexixK0i/rsl1F3fPTZtSN3vai', 'admin', '2026-08-21 07:35:46', '2026-08-21 07:35:46'),
-(2, 'Tanaka Rahman', 'tanaka@rescue.com', '01800000000', '$2y$10$lJMs7egNit.DoRe/xM7asO35.mHpp0cuKqiPA2alhtQ5s7/bZah.y', 'witness', '2026-08-21 08:18:48', '2026-08-21 08:18:48');
+(2, 'Tanaka Rahman', 'tanaka@rescue.com', '01800000000', '$2y$10$lJMs7egNit.DoRe/xM7asO35.mHpp0cuKqiPA2alhtQ5s7/bZah.y', 'witness', '2026-08-21 08:18:48', '2026-08-21 08:18:48'),
+(3, 'Parvej', 'parvej@rescue.com', '01900000000', '$2y$10$UHacZYTqkzzRovwowls1fuc41RobBnObJZQkJ8UH5u/zUU9Y/T80W', 'help_seeker', '2026-08-23 05:36:16', '2026-08-23 05:36:16');
 
 -- --------------------------------------------------------
 
@@ -123,8 +153,22 @@ CREATE TABLE `witness_reports` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `witness_reports`
+--
+
+INSERT INTO `witness_reports` (`id`, `witness_id`, `title`, `description`, `incident_type`, `location`, `incident_date`, `evidence_file`, `status`, `created_at`, `updated_at`) VALUES
+(1, 2, 'Accident', 'Near kuril', 'accident', 'kuril', '2026-08-22 14:00:00', NULL, 'pending', '2026-08-22 10:36:42', '2026-08-22 10:36:42');
+
+--
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `emergency_requests`
+--
+ALTER TABLE `emergency_requests`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_emergency_help_seeker` (`help_seeker_id`);
 
 --
 -- Indexes for table `feedback`
@@ -166,6 +210,12 @@ ALTER TABLE `witness_reports`
 --
 
 --
+-- AUTO_INCREMENT for table `emergency_requests`
+--
+ALTER TABLE `emergency_requests`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `feedback`
 --
 ALTER TABLE `feedback`
@@ -187,17 +237,23 @@ ALTER TABLE `rescue_reports`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `witness_reports`
 --
 ALTER TABLE `witness_reports`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `emergency_requests`
+--
+ALTER TABLE `emergency_requests`
+  ADD CONSTRAINT `fk_emergency_help_seeker` FOREIGN KEY (`help_seeker_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `feedback`

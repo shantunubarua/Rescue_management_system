@@ -1,42 +1,197 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
+    background: #f5f5f5;
 }
 
+/* =========================
+   SIDEBAR
+========================= */
+
 .sidebar {
-    width: 220px;
+    width: 230px;
     height: 100vh;
-    background: #2c3e50;
+    background: #344256;
     color: white;
     position: fixed;
-    padding: 20px;
+    top: 0;
+    left: 0;
+    padding: 25px;
 }
 
 .sidebar h2 {
     margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 28px;
+    line-height: 1.2;
 }
 
 .sidebar ul {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 .sidebar li {
-    margin-bottom: 15px;
+    margin-bottom: 18px;
 }
 
 .sidebar a {
     color: white;
     text-decoration: none;
+    font-size: 19px;
 }
+
+/* Cursor nile underline */
+.sidebar a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================
+   MAIN CONTENT
+========================= */
 
 .content {
-    margin-left: 260px;
-    padding: 20px;
+    margin-left: 280px;
+    padding: 40px 45px;
+    min-height: 100vh;
+    background: white;
 }
 
+.content h1 {
+    margin-top: 0;
+    font-size: 36px;
+}
+
+.content p {
+    font-size: 17px;
+}
+
+
+/* =========================
+   DASHBOARD CARDS
+========================= */
+
 .card {
+    background: white;
     border: 1px solid #ddd;
-    padding: 20px;
+    padding: 25px;
     margin-top: 20px;
+}
+
+.card h3 {
+    margin-top: 0;
+    font-size: 22px;
+}
+
+
+/* =========================
+   CREATE / EDIT FORMS
+========================= */
+
+.content>form {
+    max-width: 700px;
+    border: 1px solid #ddd;
+    padding: 30px;
+    margin-top: 25px;
+}
+
+.content>form div {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-size: 17px;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+}
+
+textarea {
+    min-height: 110px;
+}
+
+button {
+    background: #344256;
+    color: white;
+    border: none;
+    padding: 11px 18px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #263548;
+}
+
+
+/* =========================
+   TABLE
+========================= */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+}
+
+th {
+    background: #344256;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+td {
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+/* Table er status form jeno huge na hoy */
+
+table form {
+    border: none;
+    padding: 0;
+    margin: 0;
+    max-width: none;
+}
+
+table form select {
+    width: auto;
+}
+
+table form button {
+    margin-left: 5px;
+}
+
+
+/* =========================
+   NOTIFICATION SEARCH
+========================= */
+
+.notification-search {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    max-width: 500px;
+}
+
+.notification-search input {
+    width: 100%;
+}
+
+#noSearchResult {
+    padding: 10px;
+    border: 1px solid #ddd;
+    background: white;
 }

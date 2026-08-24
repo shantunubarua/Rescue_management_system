@@ -6,6 +6,31 @@
 
     <h1>Notifications</h1>
 
+    <div class="notification-search">
+
+    <label for="notificationSearch">
+        Search Notifications
+    </label>
+
+    <br>
+
+    <input
+        type="text"
+        id="notificationSearch"
+        placeholder="Search by title, message, type or status..."
+    >
+
+</div>
+
+<br>
+
+<p
+    id="noSearchResult"
+    style="display: none;"
+>
+    No matching notification found.
+</p>
+
     <p>
         <a href="index.php?page=notification-create">
             Create New Notification
@@ -39,7 +64,7 @@
 
                 <?php foreach ($notifications as $notification): ?>
 
-                    <tr>
+                    <tr class="notification-row">
 
                         <td>
                             <?php echo (int)$notification['id']; ?>

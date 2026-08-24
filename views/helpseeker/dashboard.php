@@ -138,10 +138,9 @@ $user = $_SESSION['user'];
             Dashboard
         </a>
 
-        <a href="#">
-            Request Rescue
-        </a>
-
+        <a href="index.php?page=helpseeker-request-create">
+    Request Rescue
+</a>
         <a href="#">
             My Requests
         </a>
@@ -179,9 +178,9 @@ $user = $_SESSION['user'];
                 Create a new rescue request when you need help.
             </p>
 
-            <a href="#">
-                Request Rescue
-            </a>
+            <a href="index.php?page=helpseeker-request-create">
+    Request Rescue
+</a>
 
         </div>
 

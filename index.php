@@ -165,6 +165,20 @@ elseif ($page === 'helpseeker-dashboard') {
 
     require_once "views/helpseeker/dashboard.php";
 }
+elseif ($page === 'helpseeker-request-create') {
+
+    requireHelpSeeker();
+
+    require_once "controllers/HelpSeekerController.php";
+
+    $error = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $error = handleCreateEmergencyRequest($conn);
+    }
+
+    require_once "views/helpseeker/create_request.php";
+}
 elseif ($page === 'witness-report-create') {
 
     requireWitness();
