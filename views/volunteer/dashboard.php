@@ -19,7 +19,7 @@
             View emergency requests that need volunteer assistance.
         </p>
 
-        <a href="#">
+        <a href="index.php?page=volunteer-emergency-requests">
             View Requests
         </a>
 
@@ -33,7 +33,7 @@
             View the rescue activities assigned to you.
         </p>
 
-        <a href="#">
+        <a href="index.php?page=volunteer-activities">
             View My Activities
         </a>
 
@@ -47,7 +47,7 @@
             Update your current availability status.
         </p>
 
-        <a href="#">
+        <a href="index.php?page=volunteer-availability">
             Update Availability
         </a>
 

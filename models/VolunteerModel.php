@@ -48,7 +48,7 @@ function getVolunteerActivities($conn, $volunteer_id)
     $sql = "SELECT *
             FROM emergency_requests
             WHERE volunteer_id = ?
-            AND status = 'assigned'
+            AND status IN ('assigned', 'ongoing', 'completed')
             ORDER BY accepted_at DESC";
 
     $stmt = mysqli_prepare($conn, $sql);
@@ -72,4 +72,38 @@ function getVolunteerActivities($conn, $volunteer_id)
     mysqli_stmt_close($stmt);
 
     return $activities;
+}
+function updateRescueActivityStatus(
+    $conn,
+    $request_id,
+    $volunteer_id,
+    $status
+) {
+    $allowed_statuses = ['ongoing', 'completed'];
+
+    if (!in_array($status, $allowed_statuses)) {
+        return false;
+    }
+
+    $sql = "UPDATE emergency_requests
+            SET status = ?
+            WHERE id = ?
+            AND volunteer_id = ?
+            AND status IN ('assigned', 'ongoing')";
+
+    $stmt = mysqli_prepare($conn, $sql);
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "sii",
+        $status,
+        $request_id,
+        $volunteer_id
+    );
+
+    $success = mysqli_stmt_execute($stmt);
+
+    mysqli_stmt_close($stmt);
+
+    return $success;
 }

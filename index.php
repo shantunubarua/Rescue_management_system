@@ -171,6 +171,30 @@ elseif ($page === 'volunteer-activities') {
 
     require_once "views/volunteer/activities.php";
 }
+elseif ($page === 'volunteer-update-status') {
+
+    requireVolunteer();
+
+    require_once "models/VolunteerModel.php";
+
+    $request_id = (int)($_POST['request_id'] ?? 0);
+    $status = $_POST['status'] ?? '';
+    $volunteer_id = (int)($_SESSION['user']['id'] ?? 0);
+
+    if ($request_id <= 0 || $volunteer_id <= 0) {
+        die("Invalid request.");
+    }
+
+    updateRescueActivityStatus(
+        $conn,
+        $request_id,
+        $volunteer_id,
+        $status
+    );
+
+    header("Location: index.php?page=volunteer-activities");
+    exit;
+}
 elseif ($page === 'volunteer-availability') {
 
     requireVolunteer();

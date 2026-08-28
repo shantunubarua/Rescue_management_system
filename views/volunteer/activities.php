@@ -87,6 +87,57 @@ $activities = getVolunteerActivities(
                         $activity['status']
                     ); ?>
                 </p>
+                <?php if ($activity['status'] === 'assigned'): ?>
+
+    <form method="POST" action="index.php?page=volunteer-update-status">
+
+        <input
+            type="hidden"
+            name="request_id"
+            value="<?php echo $activity['id']; ?>"
+        >
+
+        <input
+            type="hidden"
+            name="status"
+            value="ongoing"
+        >
+
+        <button type="submit">
+            Start Rescue
+        </button>
+
+    </form>
+
+<?php elseif ($activity['status'] === 'ongoing'): ?>
+
+    <form method="POST" action="index.php?page=volunteer-update-status">
+
+        <input
+            type="hidden"
+            name="request_id"
+            value="<?php echo $activity['id']; ?>"
+        >
+
+        <input
+            type="hidden"
+            name="status"
+            value="completed"
+        >
+
+        <button type="submit">
+            Mark Completed
+        </button>
+
+    </form>
+
+<?php elseif ($activity['status'] === 'completed'): ?>
+
+    <p>
+        <strong>Rescue Completed</strong>
+    </p>
+
+<?php endif; ?>
 
                 <p>
                     <strong>Accepted At:</strong>
