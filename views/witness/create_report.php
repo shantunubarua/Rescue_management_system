@@ -16,9 +16,10 @@
 
 
     <form
-        method="POST"
-        action="index.php?page=witness-report-create"
-    >
+    method="POST"
+    action="index.php?page=witness-report-create"
+    enctype="multipart/form-data"
+>
 
         <div>
 
@@ -126,25 +127,30 @@
 
         <br>
 
+<div>
 
-        <div>
+    <label for="evidence_file">
+        Evidence File
+    </label>
 
-            <label for="incident_date">
-                Incident Date & Time
-            </label>
+    <br>
 
-            <br>
+    <input
+        type="file"
+        id="evidence_file"
+        name="evidence_file"
+        accept=".jpg,.jpeg,.png,.pdf"
+    >
 
-            <input
-                type="datetime-local"
-                id="incident_date"
-                name="incident_date"
-                required
-            >
+    <br>
 
-        </div>
+    <small>
+        Allowed: JPG, JPEG, PNG, PDF
+    </small>
 
-        <br>
+</div>
+
+<br>
 
 
         <button type="submit">
