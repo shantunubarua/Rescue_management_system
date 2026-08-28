@@ -62,6 +62,12 @@ elseif ($user['role'] === 'help_seeker') {
     exit;
 
 }
+elseif ($user['role'] === 'volunteer') {
+
+    header("Location: index.php?page=volunteer-dashboard");
+    exit;
+
+}
 
     return "Invalid role.";
 }

@@ -65,3 +65,11 @@ function requireHelpSeeker()
         die("Access denied.");
     }
 }
+function requireVolunteer()
+{
+    requireLogin();
+
+    if ($_SESSION['user']['role'] !== 'volunteer') {
+        die("Access denied.");
+    }
+}

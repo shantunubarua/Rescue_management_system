@@ -11,6 +11,7 @@ $role = $_SESSION['user']['role'] ?? '';
         <h2>Admin Panel</h2>
 
         <ul>
+            
 
             <li>
                 <a href="index.php?page=admin-dashboard">
@@ -77,21 +78,42 @@ $role = $_SESSION['user']['role'] ?? '';
 
         </ul>
 
+<?php elseif ($role === 'volunteer'): ?>
 
-    <?php elseif ($role === 'volunteer'): ?>
+    <h2>Volunteer Panel</h2>
 
-        <h2>Volunteer Panel</h2>
+    <ul>
 
-        <ul>
+        <li>
+            <a href="index.php?page=volunteer-dashboard">
+                Dashboard
+            </a>
+        </li>
 
-            <li>
-                <a href="index.php?page=logout">
-                    Logout
-                </a>
-            </li>
+       <li>
+    <a href="index.php?page=volunteer-emergency-requests">
+        Emergency Requests
+    </a>
+    </li>
 
-        </ul>
+      <li>
+    <a href="index.php?page=volunteer-activities">
+        My Rescue Activities
+    </a>
+</li>
+<li>
+    <a href="index.php?page=volunteer-availability">
+        My Availability
+    </a>
+</li>
 
+        <li>
+            <a href="index.php?page=logout">
+                Logout
+            </a>
+        </li>
+
+    </ul>
 
     <?php elseif ($role === 'help_seeker'): ?>
 

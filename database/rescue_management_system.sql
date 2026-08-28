@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 24, 2026 at 06:53 PM
+-- Generation Time: Aug 28, 2026 at 11:42 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -40,15 +40,17 @@ CREATE TABLE `emergency_requests` (
   `contact_information` varchar(150) NOT NULL,
   `status` enum('pending','assigned','ongoing','completed','cancelled') NOT NULL DEFAULT 'pending',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `volunteer_id` int(11) DEFAULT NULL,
+  `accepted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `emergency_requests`
 --
 
-INSERT INTO `emergency_requests` (`id`, `help_seeker_id`, `emergency_type`, `location`, `description`, `priority`, `victim_type`, `victim_information`, `victim_count`, `contact_information`, `status`, `created_at`, `updated_at`) VALUES
-(1, 3, 'medical', 'Mirpur', 'A person needs immediate medical assistance.', 'high', 'self', NULL, 1, '01300000000', 'pending', '2026-08-24 15:57:34', '2026-08-24 15:57:34');
+INSERT INTO `emergency_requests` (`id`, `help_seeker_id`, `emergency_type`, `location`, `description`, `priority`, `victim_type`, `victim_information`, `victim_count`, `contact_information`, `status`, `created_at`, `updated_at`, `volunteer_id`, `accepted_at`) VALUES
+(1, 3, 'medical', 'Mirpur', 'A person needs immediate medical assistance.', 'high', 'self', NULL, 1, '01300000000', 'assigned', '2026-08-24 15:57:34', '2026-08-28 08:41:09', 4, '2026-08-28 14:41:09');
 
 -- --------------------------------------------------------
 
@@ -119,6 +121,7 @@ CREATE TABLE `users` (
   `phone` varchar(20) DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `role` enum('admin','volunteer','witness','help_seeker') NOT NULL,
+  `availability` enum('available','unavailable') NOT NULL DEFAULT 'available',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -127,10 +130,11 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `phone`, `password`, `role`, `created_at`, `updated_at`) VALUES
-(1, 'System Admin', 'admin@rescue.com', '01700000000', '$2y$10$0TxWWt5Dy4zyekIjW/gJYefYvGILexixK0i/rsl1F3fPTZtSN3vai', 'admin', '2026-08-21 07:35:46', '2026-08-21 07:35:46'),
-(2, 'Tanaka Rahman', 'tanaka@rescue.com', '01800000000', '$2y$10$lJMs7egNit.DoRe/xM7asO35.mHpp0cuKqiPA2alhtQ5s7/bZah.y', 'witness', '2026-08-21 08:18:48', '2026-08-21 08:18:48'),
-(3, 'Parvej', 'parvej@rescue.com', '01900000000', '$2y$10$UHacZYTqkzzRovwowls1fuc41RobBnObJZQkJ8UH5u/zUU9Y/T80W', 'help_seeker', '2026-08-23 05:36:16', '2026-08-23 05:36:16');
+INSERT INTO `users` (`id`, `name`, `email`, `phone`, `password`, `role`, `availability`, `created_at`, `updated_at`) VALUES
+(1, 'System Admin', 'admin@rescue.com', '01700000000', '$2y$10$0TxWWt5Dy4zyekIjW/gJYefYvGILexixK0i/rsl1F3fPTZtSN3vai', 'admin', 'available', '2026-08-21 07:35:46', '2026-08-21 07:35:46'),
+(2, 'Tanaka Rahman', 'tanaka@rescue.com', '01800000000', '$2y$10$lJMs7egNit.DoRe/xM7asO35.mHpp0cuKqiPA2alhtQ5s7/bZah.y', 'witness', 'available', '2026-08-21 08:18:48', '2026-08-21 08:18:48'),
+(3, 'Parvej', 'parvej@rescue.com', '01900000000', '$2y$10$UHacZYTqkzzRovwowls1fuc41RobBnObJZQkJ8UH5u/zUU9Y/T80W', 'help_seeker', 'available', '2026-08-23 05:36:16', '2026-08-23 05:36:16'),
+(4, 'Suporna', 'suporna@rescue.com', '01300000000', '$2y$10$9KF9gXFTFbPW1UwEGm5A2epXacKWrMWmjabHNztosJGFy0PAiZsJq', 'volunteer', 'unavailable', '2026-08-27 20:12:38', '2026-08-28 09:03:11');
 
 -- --------------------------------------------------------
 
@@ -237,7 +241,7 @@ ALTER TABLE `rescue_reports`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `witness_reports`

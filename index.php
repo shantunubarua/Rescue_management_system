@@ -159,12 +159,46 @@ elseif ($page === 'witness-dashboard') {
     require_once "views/witness/dashboard.php";
 }
 
+elseif ($page === 'volunteer-dashboard') {
+
+    requireVolunteer();
+
+    require_once "views/volunteer/dashboard.php";
+}
+elseif ($page === 'volunteer-activities') {
+
+    requireVolunteer();
+
+    require_once "views/volunteer/activities.php";
+}
+elseif ($page === 'volunteer-availability') {
+
+    requireVolunteer();
+
+    require_once "views/volunteer/availability.php";
+}
+
+
+elseif ($page === 'volunteer-accept-request') {
+
+    requireVolunteer();
+
+    require_once "views/volunteer/accept_request.php";
+}
+elseif ($page === 'volunteer-emergency-requests') {
+
+    requireVolunteer();
+
+    require_once "views/volunteer/emergency_requests.php";
+}
+
 elseif ($page === 'helpseeker-dashboard') {
 
     requireHelpSeeker();
 
     require_once "views/helpseeker/dashboard.php";
 }
+
 elseif ($page === 'helpseeker-request-create') {
 
     requireHelpSeeker();
