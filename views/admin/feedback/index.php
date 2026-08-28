@@ -1,5 +1,4 @@
 <?php require_once "views/partials/header.php"; ?>
-
 <?php require_once "views/partials/sidebar.php"; ?>
 
 <div class="content">
@@ -12,9 +11,10 @@
 
     <?php else: ?>
 
-        <table border="1" cellpadding="10" cellspacing="0">
+        <table>
 
             <thead>
+
                 <tr>
                     <th>ID</th>
                     <th>Help Seeker</th>
@@ -22,7 +22,9 @@
                     <th>Message</th>
                     <th>Status</th>
                     <th>Created At</th>
+                    <th>Action</th>
                 </tr>
+
             </thead>
 
             <tbody>
@@ -61,49 +63,62 @@
 
                         <td>
 
-    <form
-        method="POST"
-        action="index.php?page=feedback"
-    >
+                            <form
+                                method="POST"
+                                action="index.php?page=feedback"
+                                class="status-form"
+                            >
 
-        <input
-            type="hidden"
-            name="id"
-            value="<?php echo (int)$item['id']; ?>"
-        >
+                                <input
+                                    type="hidden"
+                                    name="id"
+                                    value="<?php echo (int)$item['id']; ?>"
+                                >
 
-        <select name="status">
+                                <select name="status">
 
-            <option
-                value="pending"
-                <?php echo $item['status'] === 'pending' ? 'selected' : ''; ?>
-            >
-                Pending
-            </option>
+                                    <option
+                                        value="pending"
+                                        <?php
+                                        echo $item['status'] === 'pending'
+                                            ? 'selected'
+                                            : '';
+                                        ?>
+                                    >
+                                        Pending
+                                    </option>
 
-            <option
-                value="reviewed"
-                <?php echo $item['status'] === 'reviewed' ? 'selected' : ''; ?>
-            >
-                Reviewed
-            </option>
+                                    <option
+                                        value="reviewed"
+                                        <?php
+                                        echo $item['status'] === 'reviewed'
+                                            ? 'selected'
+                                            : '';
+                                        ?>
+                                    >
+                                        Reviewed
+                                    </option>
 
-            <option
-                value="resolved"
-                <?php echo $item['status'] === 'resolved' ? 'selected' : ''; ?>
-            >
-                Resolved
-            </option>
+                                    <option
+                                        value="resolved"
+                                        <?php
+                                        echo $item['status'] === 'resolved'
+                                            ? 'selected'
+                                            : '';
+                                        ?>
+                                    >
+                                        Resolved
+                                    </option>
 
-        </select>
+                                </select>
 
-        <button type="submit">
-            Update
-        </button>
+                                <button type="submit">
+                                    Update
+                                </button>
 
-    </form>
+                            </form>
 
-</td>
+                        </td>
 
                         <td>
                             <?php
@@ -111,6 +126,32 @@
                                 $item['created_at']
                             );
                             ?>
+                        </td>
+
+                        <td>
+
+                            <form
+                                method="POST"
+                                action="index.php?page=feedback-delete"
+                                class="delete-form"
+                                onsubmit="return confirm('Are you sure you want to delete this feedback?');"
+                            >
+
+                                <input
+                                    type="hidden"
+                                    name="id"
+                                    value="<?php echo (int)$item['id']; ?>"
+                                >
+
+                                <button
+                                    type="submit"
+                                    class="delete-link"
+                                >
+                                    Delete
+                                </button>
+
+                            </form>
+
                         </td>
 
                     </tr>

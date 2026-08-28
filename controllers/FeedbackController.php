@@ -31,3 +31,26 @@ function handleUpdateFeedbackStatus($conn)
 
     return '';
 }
+function handleDeleteFeedback($conn)
+{
+    require_once "models/FeedbackModel.php";
+
+    $feedback_id =
+        (int)($_POST['id'] ?? 0);
+
+    if ($feedback_id <= 0) {
+        die("Invalid feedback ID.");
+    }
+
+    $deleted = deleteFeedback(
+        $conn,
+        $feedback_id
+    );
+
+    if (!$deleted) {
+        die("Failed to delete feedback.");
+    }
+
+    header("Location: index.php?page=feedback");
+    exit;
+}

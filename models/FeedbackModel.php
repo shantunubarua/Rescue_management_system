@@ -94,3 +94,22 @@ function updateFeedbackStatus($conn, $id, $status)
 
     return $success;
 }
+function deleteFeedback($conn, $feedback_id)
+{
+    $sql = "DELETE FROM feedback
+            WHERE id = ?";
+
+    $stmt = mysqli_prepare($conn, $sql);
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "i",
+        $feedback_id
+    );
+
+    $success = mysqli_stmt_execute($stmt);
+
+    mysqli_stmt_close($stmt);
+
+    return $success;
+}

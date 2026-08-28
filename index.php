@@ -20,6 +20,10 @@ if ($page === 'login') {
 
     requireAdmin();
 
+    require_once "models/AdminDashboardModel.php";
+
+    $dashboardCounts = getAdminDashboardCounts($conn);
+
     require_once "views/admin/dashboard.php";
 }
 elseif ($page === 'logout') {
@@ -56,6 +60,18 @@ elseif ($page === 'feedback') {
 
     require_once "views/admin/feedback/index.php";
 }
+elseif ($page === 'feedback-delete') {
+
+    requireAdmin();
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        die("Invalid request method.");
+    }
+
+    require_once "controllers/FeedbackController.php";
+
+    handleDeleteFeedback($conn);
+}
 elseif ($page === 'rescue-reports') {
 
     requireAdmin();
@@ -71,6 +87,82 @@ elseif ($page === 'rescue-reports') {
     $reports = loadAllRescueReports($conn);
 
     require_once "views/admin/rescue_reports/index.php";
+}
+elseif ($page === 'rescue-report-create') {
+
+    requireAdmin();
+
+    require_once "controllers/RescueReportController.php";
+
+    $error = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $error = handleCreateRescueReport(
+            $conn
+        );
+    }
+
+    require_once "views/admin/rescue_reports/create.php";
+}
+elseif ($page === 'rescue-report-edit') {
+
+    requireAdmin();
+
+    require_once "models/RescueReportModel.php";
+    require_once "controllers/RescueReportController.php";
+
+    $id = isset($_GET['id'])
+        ? (int)$_GET['id']
+        : 0;
+
+    if ($id <= 0) {
+        die("Invalid rescue report ID.");
+    }
+
+    $report = getRescueReportById(
+        $conn,
+        $id
+    );
+
+    if (!$report) {
+        die("Rescue report not found.");
+    }
+
+    $error = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $error = handleEditRescueReport(
+            $conn,
+            $id
+        );
+
+        if ($error !== '') {
+
+            $report['rescue_status'] =
+                $_POST['rescue_status']
+                ?? $report['rescue_status'];
+
+            $report['description'] =
+                $_POST['description']
+                ?? $report['description'];
+        }
+    }
+
+    require_once "views/admin/rescue_reports/edit.php";
+}
+elseif ($page === 'rescue-report-delete') {
+
+    requireAdmin();
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        die("Invalid request method.");
+    }
+
+    require_once "controllers/RescueReportController.php";
+
+    handleDeleteRescueReport($conn);
 }
 
  elseif ($page === 'notification-create') {
@@ -214,6 +306,12 @@ elseif ($page === 'volunteer-emergency-requests') {
     requireVolunteer();
 
     require_once "views/volunteer/emergency_requests.php";
+}
+elseif ($page === 'volunteer-profile') {
+
+    requireVolunteer();
+
+    require_once "views/volunteer/profile.php";
 }
 
 elseif ($page === 'helpseeker-dashboard') {

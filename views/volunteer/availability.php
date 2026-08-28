@@ -7,62 +7,34 @@ require_once "models/VolunteerModel.php";
 
 $volunteer_id = $_SESSION['user']['id'];
 
-$message = "";
+$message = '';
+$error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $availability = $_POST['availability'] ?? '';
+    $availability_status =
+        $_POST['availability_status'] ?? '';
 
-    if (
-        $availability === 'available' ||
-        $availability === 'unavailable'
-    ) {
+    $updated = updateVolunteerAvailability(
+        $conn,
+        $volunteer_id,
+        $availability_status
+    );
 
-        $sql = "UPDATE users
-                SET availability = ?
-                WHERE id = ?
-                AND role = 'volunteer'";
-
-        $stmt = mysqli_prepare($conn, $sql);
-
-        mysqli_stmt_bind_param(
-            $stmt,
-            "si",
-            $availability,
-            $volunteer_id
-        );
-
-        mysqli_stmt_execute($stmt);
-
-        mysqli_stmt_close($stmt);
-
+    if ($updated) {
         $message = "Availability updated successfully.";
+    } else {
+        $error = "Failed to update availability.";
     }
 }
 
-$sql = "SELECT availability
-        FROM users
-        WHERE id = ?
-        AND role = 'volunteer'
-        LIMIT 1";
-
-$stmt = mysqli_prepare($conn, $sql);
-
-mysqli_stmt_bind_param(
-    $stmt,
-    "i",
+$profile = getVolunteerAvailability(
+    $conn,
     $volunteer_id
 );
 
-mysqli_stmt_execute($stmt);
-
-$result = mysqli_stmt_get_result($stmt);
-
-$user = mysqli_fetch_assoc($result);
-
-mysqli_stmt_close($stmt);
-
-$current_availability = $user['availability'] ?? 'available';
+$current_status =
+    $profile['availability_status'] ?? 'available';
 
 ?>
 
@@ -71,40 +43,62 @@ $current_availability = $user['availability'] ?? 'available';
     <h1>My Availability</h1>
 
     <p>
-        Update your current availability status.
+        Update your current volunteer availability status.
     </p>
 
-    <?php if ($message): ?>
+    <?php if ($message !== ''): ?>
 
-        <div class="card">
-            <p>
-                <?php echo htmlspecialchars($message); ?>
-            </p>
-        </div>
+        <p>
+            <?php echo htmlspecialchars($message); ?>
+        </p>
+
+    <?php endif; ?>
+
+    <?php if ($error !== ''): ?>
+
+        <p>
+            <?php echo htmlspecialchars($error); ?>
+        </p>
 
     <?php endif; ?>
 
     <div class="card">
 
-        <h3>Availability Status</h3>
+        <h3>
+            Current Status:
+            <span id="availabilityText">
+                <?php
+                echo htmlspecialchars(
+                    ucwords(
+                        str_replace(
+                            '_',
+                            ' ',
+                            $current_status
+                        )
+                    )
+                );
+                ?>
+            </span>
+        </h3>
 
         <form method="POST">
 
             <div>
 
-                <label for="availability">
-                    Current Availability
+                <label for="availability_status">
+                    Availability Status
                 </label>
 
                 <select
-                    name="availability"
-                    id="availability"
+                    name="availability_status"
+                    id="availability_status"
+                    required
                 >
 
                     <option
                         value="available"
                         <?php
-                        echo $current_availability === 'available'
+                        echo $current_status === 'available'
                             ? 'selected'
                             : '';
                         ?>
@@ -115,12 +109,23 @@ $current_availability = $user['availability'] ?? 'available';
                     <option
                         value="unavailable"
                         <?php
-                        echo $current_availability === 'unavailable'
+                        echo $current_status === 'unavailable'
                             ? 'selected'
                             : '';
                         ?>
                     >
                         Unavailable
+                    </option>
+
+                    <option
+                        value="currently_rescuing"
+                        <?php
+                        echo $current_status === 'currently_rescuing'
+                            ? 'selected'
+                            : '';
+                        ?>
+                    >
+                        Currently Rescuing
                     </option>
 
                 </select>
@@ -136,5 +141,28 @@ $current_availability = $user['availability'] ?? 'available';
     </div>
 
 </div>
+
+<script>
+const availabilitySelect =
+    document.getElementById('availability_status');
+
+const availabilityText =
+    document.getElementById('availabilityText');
+
+availabilitySelect.addEventListener(
+    'change',
+    function () {
+
+        let text =
+            availabilitySelect
+                .options[
+                    availabilitySelect.selectedIndex
+                ]
+                .text;
+
+        availabilityText.textContent = text;
+    }
+);
+</script>
 
 <?php require_once "views/partials/footer.php"; ?>

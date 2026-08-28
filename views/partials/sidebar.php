@@ -102,6 +102,11 @@ $role = $_SESSION['user']['role'] ?? '';
     </a>
 </li>
 <li>
+    <a href="index.php?page=volunteer-profile">
+        My Profile
+    </a>
+</li>
+<li>
     <a href="index.php?page=volunteer-availability">
         My Availability
     </a>

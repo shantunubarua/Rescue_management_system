@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 28, 2026 at 11:42 AM
+-- Generation Time: Aug 28, 2026 at 06:29 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -50,7 +50,7 @@ CREATE TABLE `emergency_requests` (
 --
 
 INSERT INTO `emergency_requests` (`id`, `help_seeker_id`, `emergency_type`, `location`, `description`, `priority`, `victim_type`, `victim_information`, `victim_count`, `contact_information`, `status`, `created_at`, `updated_at`, `volunteer_id`, `accepted_at`) VALUES
-(1, 3, 'medical', 'Mirpur', 'A person needs immediate medical assistance.', 'high', 'self', NULL, 1, '01300000000', 'assigned', '2026-08-24 15:57:34', '2026-08-28 08:41:09', 4, '2026-08-28 14:41:09');
+(1, 3, 'medical', 'Mirpur', 'A person needs immediate medical assistance.', 'high', 'self', NULL, 1, '01300000000', 'ongoing', '2026-08-24 15:57:34', '2026-08-28 15:26:35', 4, '2026-08-28 21:25:54');
 
 -- --------------------------------------------------------
 
@@ -121,7 +121,6 @@ CREATE TABLE `users` (
   `phone` varchar(20) DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `role` enum('admin','volunteer','witness','help_seeker') NOT NULL,
-  `availability` enum('available','unavailable') NOT NULL DEFAULT 'available',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -130,11 +129,37 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `phone`, `password`, `role`, `availability`, `created_at`, `updated_at`) VALUES
-(1, 'System Admin', 'admin@rescue.com', '01700000000', '$2y$10$0TxWWt5Dy4zyekIjW/gJYefYvGILexixK0i/rsl1F3fPTZtSN3vai', 'admin', 'available', '2026-08-21 07:35:46', '2026-08-21 07:35:46'),
-(2, 'Tanaka Rahman', 'tanaka@rescue.com', '01800000000', '$2y$10$lJMs7egNit.DoRe/xM7asO35.mHpp0cuKqiPA2alhtQ5s7/bZah.y', 'witness', 'available', '2026-08-21 08:18:48', '2026-08-21 08:18:48'),
-(3, 'Parvej', 'parvej@rescue.com', '01900000000', '$2y$10$UHacZYTqkzzRovwowls1fuc41RobBnObJZQkJ8UH5u/zUU9Y/T80W', 'help_seeker', 'available', '2026-08-23 05:36:16', '2026-08-23 05:36:16'),
-(4, 'Suporna', 'suporna@rescue.com', '01300000000', '$2y$10$9KF9gXFTFbPW1UwEGm5A2epXacKWrMWmjabHNztosJGFy0PAiZsJq', 'volunteer', 'unavailable', '2026-08-27 20:12:38', '2026-08-28 09:03:11');
+INSERT INTO `users` (`id`, `name`, `email`, `phone`, `password`, `role`, `created_at`, `updated_at`) VALUES
+(1, 'System Admin', 'admin@rescue.com', '01700000000', '$2y$10$0TxWWt5Dy4zyekIjW/gJYefYvGILexixK0i/rsl1F3fPTZtSN3vai', 'admin', '2026-08-21 07:35:46', '2026-08-21 07:35:46'),
+(2, 'Tanaka Rahman', 'tanaka@rescue.com', '01800000000', '$2y$10$lJMs7egNit.DoRe/xM7asO35.mHpp0cuKqiPA2alhtQ5s7/bZah.y', 'witness', '2026-08-21 08:18:48', '2026-08-21 08:18:48'),
+(3, 'Parvej', 'parvej@rescue.com', '01900000000', '$2y$10$UHacZYTqkzzRovwowls1fuc41RobBnObJZQkJ8UH5u/zUU9Y/T80W', 'help_seeker', '2026-08-23 05:36:16', '2026-08-23 05:36:16'),
+(4, 'Suporna', 'suporna@rescue.com', '01300000000', '$2y$10$9KF9gXFTFbPW1UwEGm5A2epXacKWrMWmjabHNztosJGFy0PAiZsJq', 'volunteer', '2026-08-27 14:12:38', '2026-08-28 03:03:11');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `volunteer_profiles`
+--
+
+CREATE TABLE `volunteer_profiles` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `blood_group` varchar(10) DEFAULT NULL,
+  `experience` varchar(255) DEFAULT NULL,
+  `skills` text DEFAULT NULL,
+  `emergency_contact` varchar(100) DEFAULT NULL,
+  `availability_status` enum('available','unavailable','currently_rescuing') NOT NULL DEFAULT 'available',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `volunteer_profiles`
+--
+
+INSERT INTO `volunteer_profiles` (`id`, `user_id`, `address`, `blood_group`, `experience`, `skills`, `emergency_contact`, `availability_status`, `created_at`, `updated_at`) VALUES
+(1, 4, 'bashundhara', 'A+', '', '', '01300000000', 'currently_rescuing', '2026-08-28 15:03:11', '2026-08-28 15:31:45');
 
 -- --------------------------------------------------------
 
@@ -203,6 +228,13 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `email` (`email`);
 
 --
+-- Indexes for table `volunteer_profiles`
+--
+ALTER TABLE `volunteer_profiles`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `witness_reports`
 --
 ALTER TABLE `witness_reports`
@@ -223,7 +255,7 @@ ALTER TABLE `emergency_requests`
 -- AUTO_INCREMENT for table `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -235,13 +267,19 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT for table `rescue_reports`
 --
 ALTER TABLE `rescue_reports`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `volunteer_profiles`
+--
+ALTER TABLE `volunteer_profiles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `witness_reports`
@@ -276,6 +314,12 @@ ALTER TABLE `notifications`
 --
 ALTER TABLE `rescue_reports`
   ADD CONSTRAINT `fk_rescue_reports_admin` FOREIGN KEY (`admin_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `volunteer_profiles`
+--
+ALTER TABLE `volunteer_profiles`
+  ADD CONSTRAINT `volunteer_profiles_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `witness_reports`
