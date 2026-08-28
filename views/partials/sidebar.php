@@ -111,6 +111,22 @@ $role = $_SESSION['user']['role'] ?? '';
         My Availability
     </a>
 </li>
+<li>
+    <a href="index.php?page=volunteer-resource-request">
+        Resource Request
+    </a>
+</li>
+
+<li>
+    <a href="index.php?page=volunteer-resource-request">
+        Resource Request
+    </a>
+</li>
+<li>
+    <a href="index.php?page=volunteer-resource-requests">
+        My Resource Requests
+    </a>
+</li>
 
         <li>
             <a href="index.php?page=logout">

@@ -294,6 +294,36 @@ elseif ($page === 'volunteer-availability') {
     require_once "views/volunteer/availability.php";
 }
 
+elseif ($page === 'volunteer-resource-request') {
+
+    requireVolunteer();
+
+    require_once "controllers/ResourceRequestController.php";
+
+    $error = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $error = handleCreateResourceRequest($conn);
+    }
+
+    require_once "views/volunteer/resource_request_create.php";
+}
+
+elseif ($page === 'volunteer-resource-requests') {
+
+    requireVolunteer();
+
+    require_once "models/ResourceRequestModel.php";
+
+    $volunteer_id = (int)$_SESSION['user']['id'];
+
+    $requests = getVolunteerResourceRequests(
+        $conn,
+        $volunteer_id
+    );
+
+    require_once "views/volunteer/resource_requests.php";
+}
 
 elseif ($page === 'volunteer-accept-request') {
 
