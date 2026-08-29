@@ -23,7 +23,6 @@
         <table border="1" cellpadding="10">
 
             <thead>
-
                 <tr>
                     <th>ID</th>
                     <th>Title</th>
@@ -33,7 +32,6 @@
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
-
             </thead>
 
             <tbody>
@@ -94,13 +92,24 @@
                                 View
                             </a>
 
-                            |
-
-                            <a
-                                href="index.php?page=witness-report-edit&id=<?php echo (int)$report['id']; ?>"
+                            <form
+                                method="POST"
+                                action="index.php?page=witness-report-delete"
+                                style="display:inline;"
+                                onsubmit="return confirm('Are you sure you want to delete this report?');"
                             >
-                                Edit
-                            </a>
+
+                                <input
+                                    type="hidden"
+                                    name="id"
+                                    value="<?php echo (int)$report['id']; ?>"
+                                >
+
+                                <button type="submit">
+                                    Delete
+                                </button>
+
+                            </form>
 
                         </td>
 

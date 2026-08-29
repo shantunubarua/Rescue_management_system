@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 29, 2026 at 10:22 AM
+-- Generation Time: Aug 29, 2026 at 01:02 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -203,7 +203,10 @@ CREATE TABLE `witness_reports` (
 --
 
 INSERT INTO `witness_reports` (`id`, `witness_id`, `title`, `description`, `incident_type`, `location`, `incident_date`, `evidence_file`, `status`, `created_at`, `updated_at`) VALUES
-(1, 2, 'Accident', 'Near kuril', 'accident', 'kuril', '2026-08-22 14:00:00', NULL, 'pending', '2026-08-22 10:36:42', '2026-08-22 10:36:42');
+(2, 2, 'Car Accident', 'Car vs Bike Clash', 'accident', 'Kuril', '2026-08-29 00:00:00', NULL, 'pending', '2026-08-29 10:39:46', '2026-08-29 10:39:46'),
+(3, 2, 'Road Accident', 'A road accident occurred near the main road', 'accident', 'Main Road', '2026-08-29 00:00:00', NULL, 'pending', '2026-08-29 10:42:18', '2026-08-29 10:42:18'),
+(4, 2, 'Flood', 'Flood at feni', 'flood', 'Feni', '2026-12-12 00:00:00', NULL, 'pending', '2026-08-29 10:47:35', '2026-08-29 10:47:35'),
+(5, 2, 'Medical Emergency', 'Suicide', 'medical', 'Jatrabari', '2026-12-11 00:00:00', 'uploads/witness/witness_2_1788000957_6a92babd16d2b.jpeg', 'pending', '2026-08-29 10:55:57', '2026-08-29 10:55:57');
 
 --
 -- Indexes for dumped tables
@@ -314,7 +317,7 @@ ALTER TABLE `volunteer_profiles`
 -- AUTO_INCREMENT for table `witness_reports`
 --
 ALTER TABLE `witness_reports`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables

@@ -518,11 +518,11 @@ if ($page === 'login') {
     }
 
     require_once "views/witness/edit_report.php";
-} elseif ($page === 'witness-report-view') {
+} elseif ($page === '/witness-report-view') {
 
     requireWitness();
 
-    require_once "models/WitnessModel.php";
+    require_once "modelsWitnessModel.php";
 
     $witness_id = (int)$_SESSION['user']['id'];
 
@@ -547,7 +547,40 @@ if ($page === 'login') {
     require_once "views/witness/view_report.php";
 
 
-} elseif ($page === 'witness-report-edit') {
+}
+elseif ($page === 'witness-report-delete') {
+
+    requireWitness();
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        die("Invalid request method.");
+    }
+
+    require_once "models/WitnessModel.php";
+
+    $witness_id = (int)$_SESSION['user']['id'];
+
+    $report_id = (int)($_POST['id'] ?? 0);
+
+    if ($report_id <= 0) {
+        die("Invalid report ID.");
+    }
+
+    $deleted = deleteWitnessReport(
+        $conn,
+        $report_id,
+        $witness_id
+    );
+
+    if (!$deleted) {
+        die("Failed to delete report.");
+    }
+
+    header("Location: index.php?page=witness-reports");
+    exit;
+}
+
+elseif ($page === 'witness-report-edit') {
 
     requireWitness();
 

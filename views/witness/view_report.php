@@ -49,9 +49,11 @@
 
             <p>
                 <strong>Description:</strong>
-                <?php echo nl2br(
+                <?php
+                echo nl2br(
                     htmlspecialchars($report['description'])
-                ); ?>
+                );
+                ?>
             </p>
 
             <p>
@@ -59,21 +61,40 @@
                 <?php echo htmlspecialchars($report['status']); ?>
             </p>
 
-            <p>
-                <strong>Submitted At:</strong>
-                <?php echo htmlspecialchars($report['created_at']); ?>
-            </p>
-
-            <?php if (!empty($report['evidence_file'])): ?>
+            <?php if (!empty($report['created_at'])): ?>
 
                 <p>
-                    <strong>Evidence:</strong>
-                    <?php echo htmlspecialchars(
-                        $report['evidence_file']
-                    ); ?>
+                    <strong>Submitted At:</strong>
+                    <?php
+                    echo htmlspecialchars(
+                        $report['created_at']
+                    );
+                    ?>
                 </p>
 
             <?php endif; ?>
+
+           <?php if (!empty($report['evidence_file'])): ?>
+
+    <p>
+        <strong>Evidence:</strong>
+
+        <a
+            href="<?php echo htmlspecialchars($report['evidence_file']); ?>"
+            target="_blank"
+        >
+            View Evidence
+        </a>
+    </p>
+
+<?php else: ?>
+
+    <p>
+        <strong>Evidence:</strong>
+        No evidence file uploaded.
+    </p>
+
+<?php endif; ?>
 
         </div>
 
