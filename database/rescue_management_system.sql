@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 28, 2026 at 06:29 PM
+-- Generation Time: Aug 29, 2026 at 10:22 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -104,6 +104,23 @@ CREATE TABLE `rescue_reports` (
   `admin_id` int(11) NOT NULL,
   `rescue_status` enum('pending','ongoing','completed','cancelled') NOT NULL DEFAULT 'pending',
   `description` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `resource_requests`
+--
+
+CREATE TABLE `resource_requests` (
+  `id` int(11) NOT NULL,
+  `volunteer_id` int(11) NOT NULL,
+  `resource_type` varchar(100) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `description` text DEFAULT NULL,
+  `status` enum('pending','approved','rejected','completed') DEFAULT 'pending',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -221,6 +238,12 @@ ALTER TABLE `rescue_reports`
   ADD KEY `fk_rescue_reports_admin` (`admin_id`);
 
 --
+-- Indexes for table `resource_requests`
+--
+ALTER TABLE `resource_requests`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -268,6 +291,12 @@ ALTER TABLE `notifications`
 --
 ALTER TABLE `rescue_reports`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `resource_requests`
+--
+ALTER TABLE `resource_requests`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`

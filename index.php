@@ -306,7 +306,7 @@ elseif ($page === 'volunteer-resource-request') {
         $error = handleCreateResourceRequest($conn);
     }
 
-    require_once "views/volunteer/resource_request_create.php";
+    require_once "views/volunteer/resource_request.php";
 }
 
 elseif ($page === 'volunteer-resource-requests') {
