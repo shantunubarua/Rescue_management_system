@@ -7,22 +7,15 @@
     <h1>My Incident Reports</h1>
 
     <p>
-
         <a href="index.php?page=witness-report-create">
-
             Report New Incident
-
         </a>
-
     </p>
-
 
     <?php if (empty($reports)): ?>
 
         <p>
-
             You have not submitted any incident reports yet.
-
         </p>
 
     <?php else: ?>
@@ -32,19 +25,13 @@
             <thead>
 
                 <tr>
-
                     <th>ID</th>
-
                     <th>Title</th>
-
                     <th>Incident Type</th>
-
                     <th>Location</th>
-
                     <th>Incident Date</th>
-
                     <th>Status</th>
-
+                    <th>Action</th>
                 </tr>
 
             </thead>
@@ -60,23 +47,61 @@
                         </td>
 
                         <td>
-                            <?php echo htmlspecialchars($report['title']); ?>
+                            <?php
+                            echo htmlspecialchars(
+                                $report['title']
+                            );
+                            ?>
                         </td>
 
                         <td>
-                            <?php echo htmlspecialchars($report['incident_type']); ?>
+                            <?php
+                            echo htmlspecialchars(
+                                $report['incident_type']
+                            );
+                            ?>
                         </td>
 
                         <td>
-                            <?php echo htmlspecialchars($report['location']); ?>
+                            <?php
+                            echo htmlspecialchars(
+                                $report['location']
+                            );
+                            ?>
                         </td>
 
                         <td>
-                            <?php echo htmlspecialchars($report['incident_date']); ?>
+                            <?php
+                            echo htmlspecialchars(
+                                $report['incident_date']
+                            );
+                            ?>
                         </td>
 
                         <td>
-                            <?php echo htmlspecialchars($report['status']); ?>
+                            <?php
+                            echo htmlspecialchars(
+                                $report['status']
+                            );
+                            ?>
+                        </td>
+
+                        <td>
+
+                            <a
+                                href="index.php?page=witness-report-view&id=<?php echo (int)$report['id']; ?>"
+                            >
+                                View
+                            </a>
+
+                            |
+
+                            <a
+                                href="index.php?page=witness-report-edit&id=<?php echo (int)$report['id']; ?>"
+                            >
+                                Edit
+                            </a>
+
                         </td>
 
                     </tr>

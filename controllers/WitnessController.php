@@ -54,3 +54,55 @@ function handleCreateWitnessReport($conn)
 
     return "Failed to create witness report.";
 }
+
+
+function handleEditWitnessReport(
+    $conn,
+    $report_id,
+    $witness_id
+) {
+    $title = trim($_POST['title'] ?? '');
+    $description = trim($_POST['description'] ?? '');
+    $incident_type = trim($_POST['incident_type'] ?? '');
+    $location = trim($_POST['location'] ?? '');
+    $incident_date = trim($_POST['incident_date'] ?? '');
+
+    if (
+        $title === '' ||
+        $description === '' ||
+        $incident_type === '' ||
+        $location === '' ||
+        $incident_date === ''
+    ) {
+        return "All required fields must be completed.";
+    }
+
+    $allowed_types = [
+        'accident',
+        'fire',
+        'flood',
+        'medical',
+        'other'
+    ];
+
+    if (!in_array($incident_type, $allowed_types, true)) {
+        return "Invalid incident type.";
+    }
+
+    if (
+        updateWitnessReport(
+            $conn,
+            $report_id,
+            $witness_id,
+            $title,
+            $description,
+            $incident_type,
+            $location,
+            $incident_date
+        )
+    ) {
+        return '';
+    }
+
+    return "Failed to update witness report.";
+}
