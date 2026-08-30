@@ -36,9 +36,9 @@ function handleCreateResourceRequest($conn)
         )
     ) {
         header(
-            "Location: index.php?page=volunteer-resource-requests"
-        );
-        exit;
+    "Location: index.php?page=volunteer-resource-requests"
+);
+exit;
     }
 
     return "Failed to submit resource request.";

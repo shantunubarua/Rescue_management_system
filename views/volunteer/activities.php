@@ -2,10 +2,9 @@
 
 require_once "views/partials/header.php";
 require_once "views/partials/sidebar.php";
-
 require_once "models/VolunteerModel.php";
 
-$volunteer_id = $_SESSION['user']['id'];
+$volunteer_id = (int)$_SESSION['user']['id'];
 
 $activities = getVolunteerActivities(
     $conn,
@@ -19,7 +18,7 @@ $activities = getVolunteerActivities(
     <h1>My Rescue Activities</h1>
 
     <p>
-        View the emergency requests assigned to you.
+        View and manage the emergency requests assigned to you.
     </p>
 
     <?php if (empty($activities)): ?>
@@ -29,7 +28,13 @@ $activities = getVolunteerActivities(
             <h3>No Rescue Activities</h3>
 
             <p>
-                You currently have no assigned rescue activities.
+                You have not accepted any emergency requests yet.
+            </p>
+
+            <p>
+                <a href="index.php?page=volunteer-emergency-requests">
+                    View Emergency Requests
+                </a>
             </p>
 
         </div>
@@ -41,110 +46,144 @@ $activities = getVolunteerActivities(
             <div class="card">
 
                 <h3>
-                    <?php echo htmlspecialchars(
+                    <?php
+                    echo htmlspecialchars(
                         $activity['emergency_type']
-                    ); ?>
+                    );
+                    ?>
                 </h3>
 
                 <p>
                     <strong>Location:</strong>
-                    <?php echo htmlspecialchars(
+                    <?php
+                    echo htmlspecialchars(
                         $activity['location']
-                    ); ?>
+                    );
+                    ?>
                 </p>
 
                 <p>
                     <strong>Description:</strong>
-                    <?php echo htmlspecialchars(
+                    <?php
+                    echo htmlspecialchars(
                         $activity['description']
-                    ); ?>
+                    );
+                    ?>
                 </p>
 
                 <p>
                     <strong>Priority:</strong>
-                    <?php echo htmlspecialchars(
+                    <?php
+                    echo htmlspecialchars(
                         $activity['priority']
-                    ); ?>
+                    );
+                    ?>
                 </p>
 
                 <p>
                     <strong>Victim Count:</strong>
-                    <?php echo htmlspecialchars(
-                        $activity['victim_count']
-                    ); ?>
+                    <?php
+                    echo (int)$activity['victim_count'];
+                    ?>
                 </p>
 
                 <p>
                     <strong>Contact:</strong>
-                    <?php echo htmlspecialchars(
+                    <?php
+                    echo htmlspecialchars(
                         $activity['contact_information']
-                    ); ?>
+                    );
+                    ?>
                 </p>
 
                 <p>
                     <strong>Status:</strong>
-                    <?php echo htmlspecialchars(
-                        $activity['status']
-                    ); ?>
+                    <?php
+                    echo htmlspecialchars(
+                        ucfirst($activity['status'])
+                    );
+                    ?>
                 </p>
+
+                <?php if (!empty($activity['accepted_at'])): ?>
+
+                    <p>
+                        <strong>Accepted At:</strong>
+                        <?php
+                        echo htmlspecialchars(
+                            $activity['accepted_at']
+                        );
+                        ?>
+                    </p>
+
+                <?php endif; ?>
+
+
                 <?php if ($activity['status'] === 'assigned'): ?>
 
-    <form method="POST" action="index.php?page=volunteer-update-status">
+                    <form
+                        method="POST"
+                        action="index.php?page=volunteer-update-status"
+                    >
 
-        <input
-            type="hidden"
-            name="request_id"
-            value="<?php echo $activity['id']; ?>"
-        >
+                        <input
+                            type="hidden"
+                            name="request_id"
+                            value="<?php
+                            echo (int)$activity['id'];
+                            ?>"
+                        >
 
-        <input
-            type="hidden"
-            name="status"
-            value="ongoing"
-        >
+                        <input
+                            type="hidden"
+                            name="status"
+                            value="ongoing"
+                        >
 
-        <button type="submit">
-            Start Rescue
-        </button>
+                        <button type="submit">
+                            Start Rescue
+                        </button>
 
-    </form>
+                    </form>
 
-<?php elseif ($activity['status'] === 'ongoing'): ?>
 
-    <form method="POST" action="index.php?page=volunteer-update-status">
+                <?php elseif ($activity['status'] === 'ongoing'): ?>
 
-        <input
-            type="hidden"
-            name="request_id"
-            value="<?php echo $activity['id']; ?>"
-        >
+                    <form
+                        method="POST"
+                        action="index.php?page=volunteer-update-status"
+                    >
 
-        <input
-            type="hidden"
-            name="status"
-            value="completed"
-        >
+                        <input
+                            type="hidden"
+                            name="request_id"
+                            value="<?php
+                            echo (int)$activity['id'];
+                            ?>"
+                        >
 
-        <button type="submit">
-            Mark Completed
-        </button>
+                        <input
+                            type="hidden"
+                            name="status"
+                            value="completed"
+                        >
 
-    </form>
+                        <button type="submit">
+                            Complete Rescue
+                        </button>
 
-<?php elseif ($activity['status'] === 'completed'): ?>
+                    </form>
 
-    <p>
-        <strong>Rescue Completed</strong>
-    </p>
 
-<?php endif; ?>
+                <?php elseif ($activity['status'] === 'completed'): ?>
 
-                <p>
-                    <strong>Accepted At:</strong>
-                    <?php echo htmlspecialchars(
-                        $activity['accepted_at']
-                    ); ?>
-                </p>
+                    <p>
+                        <strong>
+                            Rescue Completed
+                        </strong>
+                    </p>
+
+                <?php endif; ?>
 
             </div>
 

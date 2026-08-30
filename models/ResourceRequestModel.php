@@ -18,9 +18,13 @@ function createResourceRequest(
 
     $stmt = mysqli_prepare($conn, $sql);
 
+    if (!$stmt) {
+        return false;
+    }
+
     mysqli_stmt_bind_param(
         $stmt,
-        "iiis",
+        "isis",
         $volunteer_id,
         $resource_type,
         $quantity,
@@ -46,20 +50,29 @@ function getVolunteerResourceRequests(
 
     $stmt = mysqli_prepare($conn, $sql);
 
+    if (!$stmt) {
+        return [];
+    }
+
     mysqli_stmt_bind_param(
         $stmt,
         "i",
         $volunteer_id
     );
 
-    mysqli_stmt_execute($stmt);
+    if (!mysqli_stmt_execute($stmt)) {
+        mysqli_stmt_close($stmt);
+        return [];
+    }
 
     $result = mysqli_stmt_get_result($stmt);
 
     $requests = [];
 
-    while ($row = mysqli_fetch_assoc($result)) {
-        $requests[] = $row;
+    if ($result) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $requests[] = $row;
+        }
     }
 
     mysqli_stmt_close($stmt);
@@ -81,6 +94,10 @@ function getResourceRequestById(
 
     $stmt = mysqli_prepare($conn, $sql);
 
+    if (!$stmt) {
+        return null;
+    }
+
     mysqli_stmt_bind_param(
         $stmt,
         "ii",
@@ -88,11 +105,18 @@ function getResourceRequestById(
         $volunteer_id
     );
 
-    mysqli_stmt_execute($stmt);
+    if (!mysqli_stmt_execute($stmt)) {
+        mysqli_stmt_close($stmt);
+        return null;
+    }
 
     $result = mysqli_stmt_get_result($stmt);
 
-    $request = mysqli_fetch_assoc($result);
+    $request = null;
+
+    if ($result) {
+        $request = mysqli_fetch_assoc($result);
+    }
 
     mysqli_stmt_close($stmt);
 
