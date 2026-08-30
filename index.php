@@ -473,7 +473,7 @@ if ($page === 'login') {
     require_once "models/ResourceRequestModel.php";
 
     $volunteer_id =
-        (int)$_SESSION['user']['id'];
+        (int)($_SESSION['user']['id'] ?? 0);
 
     $requests = getVolunteerResourceRequests(
         $conn,
@@ -481,10 +481,13 @@ if ($page === 'login') {
     );
 
     /*
-     * This page shows the volunteer's
-     * resource request database information.
+     * IMPORTANT:
+     * আমরা আলাদা resource_requests.php রাখছি না।
+     * একই resource_request.php route অনুযায়ী
+     * form অথবা My Resource Requests দেখাবে।
      */
-    require_once "views/volunteer/resource_requests.php";
+
+    require_once "views/volunteer/resource_request.php";
 
 
 /*
@@ -523,6 +526,7 @@ if ($page === 'login') {
     );
 
     if (!$accepted) {
+
         die(
             "This emergency request is no longer available."
         );
