@@ -16,15 +16,16 @@
 
 
     <form
-    method="POST"
-    action="index.php?page=witness-report-create"
-    enctype="multipart/form-data"
->
+        method="POST"
+        action="index.php?page=witness-report-create"
+        enctype="multipart/form-data"
+    >
 
+        <!-- Incident Title -->
         <div>
 
             <label for="title">
-                Incident Title
+                Incident Title *
             </label>
 
             <br>
@@ -42,10 +43,11 @@
         <br>
 
 
+        <!-- Description -->
         <div>
 
             <label for="description">
-                Description
+                Description *
             </label>
 
             <br>
@@ -62,10 +64,11 @@
         <br>
 
 
+        <!-- Incident Type -->
         <div>
 
             <label for="incident_type">
-                Incident Type
+                Incident Type *
             </label>
 
             <br>
@@ -107,10 +110,11 @@
         <br>
 
 
+        <!-- Location -->
         <div>
 
             <label for="location">
-                Location
+                Location *
             </label>
 
             <br>
@@ -127,32 +131,56 @@
 
         <br>
 
-<div>
 
-    <label for="evidence_file">
-        Evidence File
-    </label>
+        <!-- Incident Date -->
+        <div>
 
-    <br>
+            <label for="incident_date">
+                Incident Date *
+            </label>
 
-    <input
-        type="file"
-        id="evidence_file"
-        name="evidence_file"
-        accept=".jpg,.jpeg,.png,.pdf"
-    >
+            <br>
 
-    <br>
+            <input
+                type="date"
+                id="incident_date"
+                name="incident_date"
+                required
+            >
 
-    <small>
-        Allowed: JPG, JPEG, PNG, PDF
-    </small>
+        </div>
 
-</div>
-
-<br>
+        <br>
 
 
+        <!-- Evidence File -->
+        <div>
+
+            <label for="evidence_file">
+                Evidence File
+            </label>
+
+            <br>
+
+            <input
+                type="file"
+                id="evidence_file"
+                name="evidence_file"
+                accept=".jpg,.jpeg,.png,.pdf"
+            >
+
+            <br>
+
+            <small>
+                Allowed: JPG, JPEG, PNG, PDF
+            </small>
+
+        </div>
+
+        <br>
+
+
+        <!-- Submit -->
         <button type="submit">
             Submit Incident Report
         </button>

@@ -105,3 +105,66 @@ function getWitnessReportById(
 
     return $report;
 }
+
+
+function updateWitnessReport(
+    $conn,
+    $report_id,
+    $witness_id,
+    $title,
+    $description,
+    $incident_type,
+    $location,
+    $incident_date
+) {
+    $sql = "UPDATE witness_reports
+            SET title = ?,
+                description = ?,
+                incident_type = ?,
+                location = ?,
+                incident_date = ?
+            WHERE id = ?
+            AND witness_id = ?";
+
+    $stmt = mysqli_prepare($conn, $sql);
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "sssssii",
+        $title,
+        $description,
+        $incident_type,
+        $location,
+        $incident_date,
+        $report_id,
+        $witness_id
+    );
+
+    $success = mysqli_stmt_execute($stmt);
+
+    mysqli_stmt_close($stmt);
+
+    return $success;
+}
+
+function deleteWitnessReport($conn, $report_id, $witness_id)
+{
+    $sql = "DELETE FROM witness_reports
+            WHERE id = ?
+            AND witness_id = ?";
+
+    $stmt = mysqli_prepare($conn, $sql);
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "ii",
+        $report_id,
+        $witness_id
+    );
+
+    $success = mysqli_stmt_execute($stmt);
+
+    mysqli_stmt_close($stmt);
+
+    return $success;
+}

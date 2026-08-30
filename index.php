@@ -22,7 +22,6 @@ if ($page === 'login') {
     }
 
     require_once "views/auth/login.php";
-}
 
 
 /*
@@ -31,7 +30,7 @@ if ($page === 'login') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'admin-dashboard') {
+} elseif ($page === 'admin-dashboard') {
 
     requireAdmin();
 
@@ -40,7 +39,6 @@ elseif ($page === 'admin-dashboard') {
     $dashboardCounts = getAdminDashboardCounts($conn);
 
     require_once "views/admin/dashboard.php";
-}
 
 
 /*
@@ -49,13 +47,12 @@ elseif ($page === 'admin-dashboard') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'logout') {
+} elseif ($page === 'logout') {
 
     logoutUser();
 
     header("Location: index.php?page=login");
     exit;
-}
 
 
 /*
@@ -64,7 +61,7 @@ elseif ($page === 'logout') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'notifications') {
+} elseif ($page === 'notifications') {
 
     requireAdmin();
 
@@ -73,7 +70,6 @@ elseif ($page === 'notifications') {
     $notifications = getAllNotifications($conn);
 
     require_once "views/admin/notifications/index.php";
-}
 
 
 /*
@@ -82,7 +78,7 @@ elseif ($page === 'notifications') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'feedback') {
+} elseif ($page === 'feedback') {
 
     requireAdmin();
 
@@ -98,7 +94,6 @@ elseif ($page === 'feedback') {
     $feedback = loadAllFeedback($conn);
 
     require_once "views/admin/feedback/index.php";
-}
 
 
 /*
@@ -107,19 +102,17 @@ elseif ($page === 'feedback') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'feedback-delete') {
+} elseif ($page === 'feedback-delete') {
 
     requireAdmin();
 
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-
         die("Invalid request method.");
     }
 
     require_once "controllers/FeedbackController.php";
 
     handleDeleteFeedback($conn);
-}
 
 
 /*
@@ -128,7 +121,7 @@ elseif ($page === 'feedback-delete') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'rescue-reports') {
+} elseif ($page === 'rescue-reports') {
 
     requireAdmin();
 
@@ -144,7 +137,6 @@ elseif ($page === 'rescue-reports') {
     $reports = loadAllRescueReports($conn);
 
     require_once "views/admin/rescue_reports/index.php";
-}
 
 
 /*
@@ -153,7 +145,7 @@ elseif ($page === 'rescue-reports') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'rescue-report-create') {
+} elseif ($page === 'rescue-report-create') {
 
     requireAdmin();
 
@@ -167,7 +159,6 @@ elseif ($page === 'rescue-report-create') {
     }
 
     require_once "views/admin/rescue_reports/create.php";
-}
 
 
 /*
@@ -176,7 +167,7 @@ elseif ($page === 'rescue-report-create') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'rescue-report-edit') {
+} elseif ($page === 'rescue-report-edit') {
 
     requireAdmin();
 
@@ -188,7 +179,6 @@ elseif ($page === 'rescue-report-edit') {
         : 0;
 
     if ($id <= 0) {
-
         die("Invalid rescue report ID.");
     }
 
@@ -198,7 +188,6 @@ elseif ($page === 'rescue-report-edit') {
     );
 
     if (!$report) {
-
         die("Rescue report not found.");
     }
 
@@ -224,7 +213,6 @@ elseif ($page === 'rescue-report-edit') {
     }
 
     require_once "views/admin/rescue_reports/edit.php";
-}
 
 
 /*
@@ -233,19 +221,17 @@ elseif ($page === 'rescue-report-edit') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'rescue-report-delete') {
+} elseif ($page === 'rescue-report-delete') {
 
     requireAdmin();
 
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-
         die("Invalid request method.");
     }
 
     require_once "controllers/RescueReportController.php";
 
     handleDeleteRescueReport($conn);
-}
 
 
 /*
@@ -254,7 +240,7 @@ elseif ($page === 'rescue-report-delete') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'notification-create') {
+} elseif ($page === 'notification-create') {
 
     requireAdmin();
 
@@ -263,12 +249,10 @@ elseif ($page === 'notification-create') {
     $error = '';
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
         $error = handleCreateNotification($conn);
     }
 
     require_once "views/admin/notifications/create.php";
-}
 
 
 /*
@@ -277,7 +261,7 @@ elseif ($page === 'notification-create') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'notification-edit') {
+} elseif ($page === 'notification-edit') {
 
     requireAdmin();
 
@@ -289,7 +273,6 @@ elseif ($page === 'notification-edit') {
         : 0;
 
     if ($id <= 0) {
-
         die("Invalid notification ID.");
     }
 
@@ -299,7 +282,6 @@ elseif ($page === 'notification-edit') {
     );
 
     if (!$notification) {
-
         die("Notification not found.");
     }
 
@@ -333,7 +315,6 @@ elseif ($page === 'notification-edit') {
     }
 
     require_once "views/admin/notifications/edit.php";
-}
 
 
 /*
@@ -342,7 +323,7 @@ elseif ($page === 'notification-edit') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'notification-delete') {
+} elseif ($page === 'notification-delete') {
 
     requireAdmin();
 
@@ -354,7 +335,6 @@ elseif ($page === 'notification-delete') {
         : 0;
 
     if ($id <= 0) {
-
         die("Invalid notification ID.");
     }
 
@@ -362,7 +342,6 @@ elseif ($page === 'notification-delete') {
         $conn,
         $id
     );
-}
 
 
 /*
@@ -371,12 +350,11 @@ elseif ($page === 'notification-delete') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'witness-dashboard') {
+} elseif ($page === 'witness-dashboard') {
 
     requireWitness();
 
     require_once "views/witness/dashboard.php";
-}
 
 
 /*
@@ -385,12 +363,11 @@ elseif ($page === 'witness-dashboard') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'volunteer-dashboard') {
+} elseif ($page === 'volunteer-dashboard') {
 
     requireVolunteer();
 
     require_once "views/volunteer/dashboard.php";
-}
 
 
 /*
@@ -399,12 +376,11 @@ elseif ($page === 'volunteer-dashboard') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'volunteer-activities') {
+} elseif ($page === 'volunteer-activities') {
 
     requireVolunteer();
 
     require_once "views/volunteer/activities.php";
-}
 
 
 /*
@@ -413,7 +389,7 @@ elseif ($page === 'volunteer-activities') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'volunteer-update-status') {
+} elseif ($page === 'volunteer-update-status') {
 
     requireVolunteer();
 
@@ -432,7 +408,6 @@ elseif ($page === 'volunteer-update-status') {
         $request_id <= 0 ||
         $volunteer_id <= 0
     ) {
-
         die("Invalid request.");
     }
 
@@ -448,7 +423,6 @@ elseif ($page === 'volunteer-update-status') {
     );
 
     exit;
-}
 
 
 /*
@@ -457,12 +431,11 @@ elseif ($page === 'volunteer-update-status') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'volunteer-availability') {
+} elseif ($page === 'volunteer-availability') {
 
     requireVolunteer();
 
     require_once "views/volunteer/availability.php";
-}
 
 
 /*
@@ -471,7 +444,7 @@ elseif ($page === 'volunteer-availability') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'volunteer-resource-request') {
+} elseif ($page === 'volunteer-resource-request') {
 
     requireVolunteer();
 
@@ -485,7 +458,6 @@ elseif ($page === 'volunteer-resource-request') {
     }
 
     require_once "views/volunteer/resource_request.php";
-}
 
 
 /*
@@ -494,21 +466,26 @@ elseif ($page === 'volunteer-resource-request') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'volunteer-resource-requests') {
+} elseif ($page === 'volunteer-resource-requests') {
 
     requireVolunteer();
 
     require_once "models/ResourceRequestModel.php";
 
-    $volunteer_id = (int)$_SESSION['user']['id'];
+    $volunteer_id =
+        (int)$_SESSION['user']['id'];
 
     $requests = getVolunteerResourceRequests(
         $conn,
         $volunteer_id
     );
 
-    require_once "views/volunteer/resource_request.php";
-}
+    /*
+     * This page shows the volunteer's
+     * resource request database information.
+     */
+    require_once "views/volunteer/resource_requests.php";
+
 
 /*
 |--------------------------------------------------------------------------
@@ -516,12 +493,11 @@ elseif ($page === 'volunteer-resource-requests') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'volunteer-accept-request') {
+} elseif ($page === 'volunteer-accept-request') {
 
     requireVolunteer();
 
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-
         die("Invalid request method.");
     }
 
@@ -537,19 +513,16 @@ elseif ($page === 'volunteer-accept-request') {
         $request_id <= 0 ||
         $volunteer_id <= 0
     ) {
-
         die("Invalid request.");
     }
 
-    $accepted =
-        acceptEmergencyRequest(
-            $conn,
-            $request_id,
-            $volunteer_id
-        );
+    $accepted = acceptEmergencyRequest(
+        $conn,
+        $request_id,
+        $volunteer_id
+    );
 
     if (!$accepted) {
-
         die(
             "This emergency request is no longer available."
         );
@@ -560,7 +533,6 @@ elseif ($page === 'volunteer-accept-request') {
     );
 
     exit;
-}
 
 
 /*
@@ -569,12 +541,11 @@ elseif ($page === 'volunteer-accept-request') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'volunteer-emergency-requests') {
+} elseif ($page === 'volunteer-emergency-requests') {
 
     requireVolunteer();
 
     require_once "views/volunteer/emergency_requests.php";
-}
 
 
 /*
@@ -583,12 +554,11 @@ elseif ($page === 'volunteer-emergency-requests') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'volunteer-profile') {
+} elseif ($page === 'volunteer-profile') {
 
     requireVolunteer();
 
     require_once "views/volunteer/profile.php";
-}
 
 
 /*
@@ -597,12 +567,11 @@ elseif ($page === 'volunteer-profile') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'helpseeker-dashboard') {
+} elseif ($page === 'helpseeker-dashboard') {
 
     requireHelpSeeker();
 
     require_once "views/helpseeker/dashboard.php";
-}
 
 
 /*
@@ -611,7 +580,7 @@ elseif ($page === 'helpseeker-dashboard') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'helpseeker-request-create') {
+} elseif ($page === 'helpseeker-request-create') {
 
     requireHelpSeeker();
 
@@ -621,12 +590,10 @@ elseif ($page === 'helpseeker-request-create') {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $error =
-            handleCreateEmergencyRequest($conn);
+        $error = handleCreateEmergencyRequest($conn);
     }
 
     require_once "views/helpseeker/create_request.php";
-}
 
 
 /*
@@ -635,7 +602,7 @@ elseif ($page === 'helpseeker-request-create') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'witness-report-create') {
+} elseif ($page === 'witness-report-create') {
 
     requireWitness();
 
@@ -645,12 +612,10 @@ elseif ($page === 'witness-report-create') {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $error =
-            handleCreateWitnessReport($conn);
+        $error = handleCreateWitnessReport($conn);
     }
 
     require_once "views/witness/create_report.php";
-}
 
 
 /*
@@ -659,7 +624,7 @@ elseif ($page === 'witness-report-create') {
 |--------------------------------------------------------------------------
 */
 
-elseif ($page === 'witness-reports') {
+} elseif ($page === 'witness-reports') {
 
     requireWitness();
 
@@ -668,14 +633,168 @@ elseif ($page === 'witness-reports') {
     $witness_id =
         (int)$_SESSION['user']['id'];
 
-    $reports =
-        getWitnessReports(
+    $reports = getWitnessReports(
+        $conn,
+        $witness_id
+    );
+
+    require_once "views/witness/reports.php";
+
+
+/*
+|--------------------------------------------------------------------------
+| WITNESS REPORT VIEW
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'witness-report-view') {
+
+    requireWitness();
+
+    require_once "models/WitnessModel.php";
+
+    $witness_id =
+        (int)$_SESSION['user']['id'];
+
+    $report_id = isset($_GET['id'])
+        ? (int)$_GET['id']
+        : 0;
+
+    if ($report_id <= 0) {
+        die("Invalid report ID.");
+    }
+
+    $report = getWitnessReportById(
+        $conn,
+        $report_id,
+        $witness_id
+    );
+
+    if (!$report) {
+        die("Report not found.");
+    }
+
+    require_once "views/witness/view_report.php";
+
+
+/*
+|--------------------------------------------------------------------------
+| WITNESS REPORT EDIT
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'witness-report-edit') {
+
+    requireWitness();
+
+    require_once "models/WitnessModel.php";
+    require_once "controllers/WitnessController.php";
+
+    $id = isset($_GET['id'])
+        ? (int)$_GET['id']
+        : 0;
+
+    if ($id <= 0) {
+        die("Invalid report ID.");
+    }
+
+    $witness_id =
+        (int)$_SESSION['user']['id'];
+
+    $report = getWitnessReportById(
+        $conn,
+        $id,
+        $witness_id
+    );
+
+    if (!$report) {
+        die("Report not found.");
+    }
+
+    $error = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $error = handleEditWitnessReport(
             $conn,
+            $id,
             $witness_id
         );
 
-    require_once "views/witness/reports.php";
-}
+        if ($error === '') {
+
+            header(
+                "Location: index.php?page=witness-reports"
+            );
+
+            exit;
+        }
+
+        $report['title'] =
+            $_POST['title']
+            ?? $report['title'];
+
+        $report['incident_type'] =
+            $_POST['incident_type']
+            ?? $report['incident_type'];
+
+        $report['location'] =
+            $_POST['location']
+            ?? $report['location'];
+
+        $report['incident_date'] =
+            $_POST['incident_date']
+            ?? $report['incident_date'];
+
+        $report['description'] =
+            $_POST['description']
+            ?? $report['description'];
+    }
+
+    require_once "views/witness/edit_report.php";
+
+
+/*
+|--------------------------------------------------------------------------
+| WITNESS REPORT DELETE
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'witness-report-delete') {
+
+    requireWitness();
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        die("Invalid request method.");
+    }
+
+    require_once "models/WitnessModel.php";
+
+    $witness_id =
+        (int)$_SESSION['user']['id'];
+
+    $report_id =
+        (int)($_POST['id'] ?? 0);
+
+    if ($report_id <= 0) {
+        die("Invalid report ID.");
+    }
+
+    $deleted = deleteWitnessReport(
+        $conn,
+        $report_id,
+        $witness_id
+    );
+
+    if (!$deleted) {
+        die("Failed to delete report.");
+    }
+
+    header(
+        "Location: index.php?page=witness-reports"
+    );
+
+    exit;
 
 
 /*
@@ -684,7 +803,7 @@ elseif ($page === 'witness-reports') {
 |--------------------------------------------------------------------------
 */
 
-else {
+} else {
 
     echo "Page not found.";
 }
