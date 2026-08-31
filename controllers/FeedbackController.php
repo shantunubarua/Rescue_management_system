@@ -54,3 +54,49 @@ function handleDeleteFeedback($conn)
     header("Location: index.php?page=feedback");
     exit;
 }
+function handleCreateFeedback($conn)
+{
+    $help_seeker_id = (int)(
+        $_SESSION['user']['id'] ?? 0
+    );
+
+    $rescue_request_id = (int)(
+        $_POST['rescue_request_id'] ?? 0
+    );
+
+    $message = trim(
+        $_POST['message'] ?? ''
+    );
+
+    if ($help_seeker_id <= 0) {
+        return "Invalid help seeker.";
+    }
+
+    if ($rescue_request_id <= 0) {
+        return "Invalid emergency request.";
+    }
+
+    if ($message === '') {
+        return "Feedback message is required.";
+    }
+
+    if (strlen($message) > 1000) {
+        return "Feedback message is too long.";
+    }
+
+    if (
+        createFeedback(
+            $conn,
+            $help_seeker_id,
+            $rescue_request_id,
+            $message
+        )
+    ) {
+        header(
+            "Location: index.php?page=helpseeker-requests"
+        );
+        exit;
+    }
+
+    return "Failed to submit feedback.";
+}

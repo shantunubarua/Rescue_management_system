@@ -113,3 +113,38 @@ function deleteFeedback($conn, $feedback_id)
 
     return $success;
 }
+function createFeedback(
+    $conn,
+    $help_seeker_id,
+    $rescue_request_id,
+    $message
+) {
+    $sql = "INSERT INTO feedback
+            (
+                help_seeker_id,
+                rescue_request_id,
+                message,
+                status
+            )
+            VALUES (?, ?, ?, 'pending')";
+
+    $stmt = mysqli_prepare($conn, $sql);
+
+    if (!$stmt) {
+        return false;
+    }
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "iis",
+        $help_seeker_id,
+        $rescue_request_id,
+        $message
+    );
+
+    $success = mysqli_stmt_execute($stmt);
+
+    mysqli_stmt_close($stmt);
+
+    return $success;
+}

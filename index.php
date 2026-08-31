@@ -598,15 +598,144 @@ if ($page === 'login') {
     }
 
     require_once "views/helpseeker/create_request.php";
+}
+elseif ($page === 'helpseeker-requests') {
 
+    requireHelpSeeker();
 
+    require_once "models/HelpSeekerModel.php";
+
+    $help_seeker_id = (int)$_SESSION['user']['id'];
+
+    $requests = getHelpSeekerRequests(
+        $conn,
+        $help_seeker_id
+    );
+
+    require_once "views/helpseeker/requests.php";
+}
+
+elseif ($page === 'helpseeker-request-view') {
+
+    requireHelpSeeker();
+
+    require_once "models/HelpSeekerModel.php";
+
+    $request_id = isset($_GET['id'])
+        ? (int)$_GET['id']
+        : 0;
+
+    $help_seeker_id = (int)$_SESSION['user']['id'];
+
+    if ($request_id <= 0) {
+        die("Invalid emergency request ID.");
+    }
+
+    $request = getHelpSeekerRequestById(
+        $conn,
+        $request_id,
+        $help_seeker_id
+    );
+
+    if (!$request) {
+        die("Emergency request not found.");
+    }
+
+    require_once "views/helpseeker/view_request.php";
+}
+elseif ($page === 'helpseeker-feedback') {
+
+    requireHelpSeeker();
+
+    require_once "models/HelpSeekerModel.php";
+    require_once "controllers/FeedbackController.php";
+
+    $request_id = isset($_GET['id'])
+        ? (int)$_GET['id']
+        : (int)($_POST['rescue_request_id'] ?? 0);
+
+    $help_seeker_id = (int)$_SESSION['user']['id'];
+
+    if ($request_id <= 0) {
+        die("Invalid emergency request ID.");
+    }
+
+    $request = getHelpSeekerRequestById(
+        $conn,
+        $request_id,
+        $help_seeker_id
+    );
+
+    if (!$request) {
+        die("Emergency request not found.");
+    }
+
+    /*
+     * Feedback can only be submitted
+     * after rescue is completed.
+     */
+    if (($request['status'] ?? '') !== 'completed') {
+        die("Feedback can only be submitted after the rescue is completed.");
+    }
+
+    $error = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $error = handleCreateFeedback($conn);
+
+    }
+
+    require_once "views/helpseeker/feedback.php";
+}
+elseif ($page === 'helpseeker-feedback') {
+
+    requireHelpSeeker();
+
+    require_once "models/HelpSeekerModel.php";
+    require_once "controllers/FeedbackController.php";
+
+    $request_id = isset($_GET['id'])
+        ? (int)$_GET['id']
+        : (int)($_POST['rescue_request_id'] ?? 0);
+
+    $help_seeker_id = (int)$_SESSION['user']['id'];
+
+    if ($request_id <= 0) {
+        die("Invalid emergency request ID.");
+    }
+
+    $request = getHelpSeekerRequestById(
+        $conn,
+        $request_id,
+        $help_seeker_id
+    );
+
+    if (!$request) {
+        die("Emergency request not found.");
+    }
+
+    if (($request['status'] ?? '') !== 'completed') {
+        die("Feedback can only be submitted after the rescue is completed.");
+    }
+
+    $error = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $error = handleCreateFeedback($conn);
+
+    }
+
+    require_once "views/helpseeker/feedback.php";
+}
 /*
 |--------------------------------------------------------------------------
 | WITNESS CREATE REPORT
 |--------------------------------------------------------------------------
 */
 
-} elseif ($page === 'witness-report-create') {
+ elseif ($page === 'witness-report-create') {
 
     requireWitness();
 
