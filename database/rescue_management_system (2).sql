@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 31, 2026 at 11:34 AM
+-- Generation Time: Sep 01, 2026 at 09:09 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,35 @@ SET time_zone = "+00:00";
 --
 -- Database: `rescue_management_system`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `donations`
+--
+
+CREATE TABLE `donations` (
+  `id` int(11) NOT NULL,
+  `witness_id` int(11) NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `donation_type` varchar(100) NOT NULL,
+  `payment_method` varchar(50) NOT NULL,
+  `message` text DEFAULT NULL,
+  `status` enum('pending','completed','cancelled') NOT NULL DEFAULT 'pending',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `donations`
+--
+
+INSERT INTO `donations` (`id`, `witness_id`, `amount`, `donation_type`, `payment_method`, `message`, `status`, `created_at`) VALUES
+(1, 2, 300.00, 'money', 'bkash', 'good luck', 'pending', '2026-09-01 05:31:15'),
+(2, 2, 300.00, 'money', 'bkash', 'good luck', 'pending', '2026-09-01 05:31:28'),
+(3, 2, 300.00, 'money', 'bkash', 'good luck', 'pending', '2026-09-01 05:48:24'),
+(4, 2, 300.00, 'money', 'bkash', 'good luck', 'pending', '2026-09-01 05:53:52'),
+(5, 2, 300.00, 'money', 'bkash', 'good luck', 'pending', '2026-09-01 05:54:01'),
+(6, 2, 300.00, 'money', 'card', 'good initiative', 'pending', '2026-09-01 06:47:02');
 
 -- --------------------------------------------------------
 
@@ -50,9 +79,7 @@ CREATE TABLE `emergency_requests` (
 --
 
 INSERT INTO `emergency_requests` (`id`, `help_seeker_id`, `emergency_type`, `location`, `description`, `priority`, `victim_type`, `victim_information`, `victim_count`, `contact_information`, `status`, `created_at`, `updated_at`, `volunteer_id`, `accepted_at`) VALUES
-(1, 3, 'medical', 'Mirpur', 'A person needs immediate medical assistance.', 'high', 'self', NULL, 1, '01300000000', 'completed', '2026-08-24 15:57:34', '2026-08-30 11:18:56', 4, '2026-08-28 21:25:54'),
-(2, 3, 'other', 'Bashundhara R/A', 'mentally sick', 'critical', 'self', NULL, 1, '1234567890', 'pending', '2026-08-31 08:54:11', '2026-08-31 08:54:11', NULL, NULL),
-(3, 3, 'fire', 'Puran Dhaka', 'major explode', 'critical', 'self', NULL, 10, '1234567890', 'pending', '2026-08-31 09:22:47', '2026-08-31 09:22:47', NULL, NULL);
+(1, 3, 'medical', 'Mirpur', 'A person needs immediate medical assistance.', 'high', 'self', NULL, 1, '01300000000', 'ongoing', '2026-08-24 15:57:34', '2026-08-28 15:26:35', 4, '2026-08-28 21:25:54');
 
 -- --------------------------------------------------------
 
@@ -69,13 +96,6 @@ CREATE TABLE `feedback` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `feedback`
---
-
-INSERT INTO `feedback` (`id`, `help_seeker_id`, `rescue_request_id`, `message`, `status`, `created_at`, `updated_at`) VALUES
-(4, 3, 1, 'Thanks for your help', 'pending', '2026-08-31 09:23:21', '2026-08-31 09:23:21');
 
 -- --------------------------------------------------------
 
@@ -134,16 +154,6 @@ CREATE TABLE `resource_requests` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `resource_requests`
---
-
-INSERT INTO `resource_requests` (`id`, `volunteer_id`, `resource_type`, `quantity`, `description`, `status`, `created_at`, `updated_at`) VALUES
-(1, 4, 'First Aid Kit', 2, 'Needed for emergency rescue activity.', 'pending', '2026-08-30 12:07:59', '2026-08-30 12:07:59'),
-(2, 4, 'First Aid Kit', 2, 'fgg', 'pending', '2026-08-30 12:13:30', '2026-08-30 12:13:30'),
-(3, 4, 'First Aid Kit', 2, 'hh', 'pending', '2026-08-30 12:17:06', '2026-08-30 12:17:06'),
-(4, 4, 'First Aid Kit 2', 2, 'qqq', 'pending', '2026-08-30 12:22:43', '2026-08-30 12:22:43');
-
 -- --------------------------------------------------------
 
 --
@@ -169,7 +179,7 @@ INSERT INTO `users` (`id`, `name`, `email`, `phone`, `password`, `role`, `create
 (1, 'System Admin', 'admin@rescue.com', '01700000000', '$2y$10$0TxWWt5Dy4zyekIjW/gJYefYvGILexixK0i/rsl1F3fPTZtSN3vai', 'admin', '2026-08-21 07:35:46', '2026-08-21 07:35:46'),
 (2, 'Tanaka Rahman', 'tanaka@rescue.com', '01800000000', '$2y$10$lJMs7egNit.DoRe/xM7asO35.mHpp0cuKqiPA2alhtQ5s7/bZah.y', 'witness', '2026-08-21 08:18:48', '2026-08-21 08:18:48'),
 (3, 'Parvej', 'parvej@rescue.com', '01900000000', '$2y$10$UHacZYTqkzzRovwowls1fuc41RobBnObJZQkJ8UH5u/zUU9Y/T80W', 'help_seeker', '2026-08-23 05:36:16', '2026-08-23 05:36:16'),
-(4, 'Suporna', 'suporna@rescue.com', '01615000000', '$2y$10$9KF9gXFTFbPW1UwEGm5A2epXacKWrMWmjabHNztosJGFy0PAiZsJq', 'volunteer', '2026-08-27 14:12:38', '2026-08-30 11:23:26');
+(4, 'Suporna', 'suporna@rescue.com', '01300000000', '$2y$10$9KF9gXFTFbPW1UwEGm5A2epXacKWrMWmjabHNztosJGFy0PAiZsJq', 'volunteer', '2026-08-27 14:12:38', '2026-08-28 03:03:11');
 
 -- --------------------------------------------------------
 
@@ -195,7 +205,7 @@ CREATE TABLE `volunteer_profiles` (
 --
 
 INSERT INTO `volunteer_profiles` (`id`, `user_id`, `address`, `blood_group`, `experience`, `skills`, `emergency_contact`, `availability_status`, `created_at`, `updated_at`) VALUES
-(1, 4, 'bashundhara', 'A+', '', '', '01300000000', 'available', '2026-08-28 15:03:11', '2026-08-30 11:17:57');
+(1, 4, 'bashundhara', 'A+', '', '', '01300000000', 'currently_rescuing', '2026-08-28 15:03:11', '2026-08-28 15:31:45');
 
 -- --------------------------------------------------------
 
@@ -208,6 +218,7 @@ CREATE TABLE `witness_reports` (
   `witness_id` int(11) NOT NULL,
   `title` varchar(150) NOT NULL,
   `description` text NOT NULL,
+  `damage_level` varchar(20) NOT NULL DEFAULT 'low',
   `incident_type` varchar(50) NOT NULL,
   `location` varchar(255) NOT NULL,
   `incident_date` datetime NOT NULL,
@@ -221,12 +232,23 @@ CREATE TABLE `witness_reports` (
 -- Dumping data for table `witness_reports`
 --
 
-INSERT INTO `witness_reports` (`id`, `witness_id`, `title`, `description`, `incident_type`, `location`, `incident_date`, `evidence_file`, `status`, `created_at`, `updated_at`) VALUES
-(1, 2, 'Accident', 'Near kuril', 'accident', 'kuril', '2026-08-22 14:00:00', NULL, 'pending', '2026-08-22 10:36:42', '2026-08-22 10:36:42');
+INSERT INTO `witness_reports` (`id`, `witness_id`, `title`, `description`, `damage_level`, `incident_type`, `location`, `incident_date`, `evidence_file`, `status`, `created_at`, `updated_at`) VALUES
+(2, 2, 'Car Accident', 'Car vs Bike Clash', 'low', 'accident', 'Kuril', '2026-08-29 00:00:00', NULL, 'pending', '2026-08-29 10:39:46', '2026-08-29 10:39:46'),
+(3, 2, 'Road Accident', 'A road accident occurred near the main road', 'low', 'accident', 'Main Road', '2026-08-29 00:00:00', NULL, 'pending', '2026-08-29 10:42:18', '2026-08-29 10:42:18'),
+(4, 2, 'Flood', 'Flood at feni', 'low', 'flood', 'Feni', '2026-12-12 00:00:00', NULL, 'pending', '2026-08-29 10:47:35', '2026-08-29 10:47:35'),
+(5, 2, 'Medical Emergency', 'Suicide', 'low', 'medical', 'Jatrabari', '2026-12-11 00:00:00', 'uploads/witness/witness_2_1788000957_6a92babd16d2b.jpeg', 'pending', '2026-08-29 10:55:57', '2026-08-29 10:55:57'),
+(6, 2, 'Gas leakage', 'At residential area', 'medium', 'other', 'Puran Dhaka', '2026-09-01 00:00:00', NULL, 'pending', '2026-09-01 03:42:30', '2026-09-01 03:42:30');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `donations`
+--
+ALTER TABLE `donations`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `donor_id` (`witness_id`);
 
 --
 -- Indexes for table `emergency_requests`
@@ -288,16 +310,22 @@ ALTER TABLE `witness_reports`
 --
 
 --
+-- AUTO_INCREMENT for table `donations`
+--
+ALTER TABLE `donations`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT for table `emergency_requests`
 --
 ALTER TABLE `emergency_requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -315,7 +343,7 @@ ALTER TABLE `rescue_reports`
 -- AUTO_INCREMENT for table `resource_requests`
 --
 ALTER TABLE `resource_requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -333,11 +361,17 @@ ALTER TABLE `volunteer_profiles`
 -- AUTO_INCREMENT for table `witness_reports`
 --
 ALTER TABLE `witness_reports`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `donations`
+--
+ALTER TABLE `donations`
+  ADD CONSTRAINT `donations_ibfk_1` FOREIGN KEY (`witness_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `emergency_requests`

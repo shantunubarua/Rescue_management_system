@@ -1,57 +1,90 @@
 <?php
 
+
 function createWitnessReport(
     $conn,
     $witness_id,
     $title,
     $description,
+    $damage_level,
     $incident_type,
     $location,
     $incident_date,
     $evidence_file
 ) {
+
     $sql = "INSERT INTO witness_reports
             (
                 witness_id,
                 title,
                 description,
+                damage_level,
                 incident_type,
                 location,
                 incident_date,
                 evidence_file
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?)";
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-    $stmt = mysqli_prepare($conn, $sql);
+
+    $stmt = mysqli_prepare(
+        $conn,
+        $sql
+    );
+
+
+    if (!$stmt) {
+        return false;
+    }
+
 
     mysqli_stmt_bind_param(
         $stmt,
-        "issssss",
+        "isssssss",
         $witness_id,
         $title,
         $description,
+        $damage_level,
         $incident_type,
         $location,
         $incident_date,
         $evidence_file
     );
 
-    $success = mysqli_stmt_execute($stmt);
+
+    $success =
+        mysqli_stmt_execute($stmt);
+
 
     mysqli_stmt_close($stmt);
+
 
     return $success;
 }
 
 
-function getWitnessReports($conn, $witness_id)
-{
+
+function getWitnessReports(
+    $conn,
+    $witness_id
+) {
+
     $sql = "SELECT *
             FROM witness_reports
             WHERE witness_id = ?
             ORDER BY id DESC";
 
-    $stmt = mysqli_prepare($conn, $sql);
+
+    $stmt = mysqli_prepare(
+        $conn,
+        $sql
+    );
+
+
+    if (!$stmt) {
+        return [];
+    }
+
 
     mysqli_stmt_bind_param(
         $stmt,
@@ -59,20 +92,32 @@ function getWitnessReports($conn, $witness_id)
         $witness_id
     );
 
+
     mysqli_stmt_execute($stmt);
 
-    $result = mysqli_stmt_get_result($stmt);
+
+    $result =
+        mysqli_stmt_get_result($stmt);
+
 
     $reports = [];
 
-    while ($row = mysqli_fetch_assoc($result)) {
+
+    while (
+        $row =
+        mysqli_fetch_assoc($result)
+    ) {
+
         $reports[] = $row;
     }
 
+
     mysqli_stmt_close($stmt);
+
 
     return $reports;
 }
+
 
 
 function getWitnessReportById(
@@ -80,13 +125,24 @@ function getWitnessReportById(
     $report_id,
     $witness_id
 ) {
+
     $sql = "SELECT *
             FROM witness_reports
             WHERE id = ?
             AND witness_id = ?
             LIMIT 1";
 
-    $stmt = mysqli_prepare($conn, $sql);
+
+    $stmt = mysqli_prepare(
+        $conn,
+        $sql
+    );
+
+
+    if (!$stmt) {
+        return null;
+    }
+
 
     mysqli_stmt_bind_param(
         $stmt,
@@ -95,16 +151,24 @@ function getWitnessReportById(
         $witness_id
     );
 
+
     mysqli_stmt_execute($stmt);
 
-    $result = mysqli_stmt_get_result($stmt);
 
-    $report = mysqli_fetch_assoc($result);
+    $result =
+        mysqli_stmt_get_result($stmt);
+
+
+    $report =
+        mysqli_fetch_assoc($result);
+
 
     mysqli_stmt_close($stmt);
 
+
     return $report;
 }
+
 
 
 function updateWitnessReport(
@@ -113,26 +177,41 @@ function updateWitnessReport(
     $witness_id,
     $title,
     $description,
+    $damage_level,
     $incident_type,
     $location,
     $incident_date
 ) {
+
     $sql = "UPDATE witness_reports
-            SET title = ?,
+            SET
+                title = ?,
                 description = ?,
+                damage_level = ?,
                 incident_type = ?,
                 location = ?,
                 incident_date = ?
             WHERE id = ?
             AND witness_id = ?";
 
-    $stmt = mysqli_prepare($conn, $sql);
+
+    $stmt = mysqli_prepare(
+        $conn,
+        $sql
+    );
+
+
+    if (!$stmt) {
+        return false;
+    }
+
 
     mysqli_stmt_bind_param(
         $stmt,
-        "sssssii",
+        "ssssssii",
         $title,
         $description,
+        $damage_level,
         $incident_type,
         $location,
         $incident_date,
@@ -140,20 +219,40 @@ function updateWitnessReport(
         $witness_id
     );
 
-    $success = mysqli_stmt_execute($stmt);
+
+    $success =
+        mysqli_stmt_execute($stmt);
+
 
     mysqli_stmt_close($stmt);
+
 
     return $success;
 }
 
-function deleteWitnessReport($conn, $report_id, $witness_id)
-{
+
+
+function deleteWitnessReport(
+    $conn,
+    $report_id,
+    $witness_id
+) {
+
     $sql = "DELETE FROM witness_reports
             WHERE id = ?
             AND witness_id = ?";
 
-    $stmt = mysqli_prepare($conn, $sql);
+
+    $stmt = mysqli_prepare(
+        $conn,
+        $sql
+    );
+
+
+    if (!$stmt) {
+        return false;
+    }
+
 
     mysqli_stmt_bind_param(
         $stmt,
@@ -162,9 +261,13 @@ function deleteWitnessReport($conn, $report_id, $witness_id)
         $witness_id
     );
 
-    $success = mysqli_stmt_execute($stmt);
+
+    $success =
+        mysqli_stmt_execute($stmt);
+
 
     mysqli_stmt_close($stmt);
+
 
     return $success;
 }

@@ -2,14 +2,18 @@
 
 <?php require_once "views/partials/sidebar.php"; ?>
 
+
 <div class="content">
 
     <h1>Report an Incident</h1>
 
+
     <?php if (!empty($error)): ?>
 
         <p style="color: red;">
-            <?php echo htmlspecialchars($error); ?>
+            <?php
+            echo htmlspecialchars($error);
+            ?>
         </p>
 
     <?php endif; ?>
@@ -21,7 +25,9 @@
         enctype="multipart/form-data"
     >
 
+
         <!-- Incident Title -->
+
         <div>
 
             <label for="title">
@@ -44,6 +50,7 @@
 
 
         <!-- Description -->
+
         <div>
 
             <label for="description">
@@ -64,7 +71,47 @@
         <br>
 
 
+       <!-- Damage Level -->
+
+<div>
+
+    <label for="damage_level">
+        Damage Level *
+    </label>
+
+    <br>
+
+    <select
+        id="damage_level"
+        name="damage_level"
+        required
+    >
+
+        <option value="">
+            Select damage level
+        </option>
+
+        <option value="low">
+            Low
+        </option>
+
+        <option value="medium">
+            Medium
+        </option>
+
+        <option value="high">
+            High
+        </option>
+
+    </select>
+
+</div>
+
+<br>
+
+
         <!-- Incident Type -->
+
         <div>
 
             <label for="incident_type">
@@ -111,6 +158,7 @@
 
 
         <!-- Location -->
+
         <div>
 
             <label for="location">
@@ -133,6 +181,7 @@
 
 
         <!-- Incident Date -->
+
         <div>
 
             <label for="incident_date">
@@ -154,6 +203,7 @@
 
 
         <!-- Evidence File -->
+
         <div>
 
             <label for="evidence_file">
@@ -173,6 +223,7 @@
 
             <small>
                 Allowed: JPG, JPEG, PNG, PDF
+                (Maximum 5 MB)
             </small>
 
         </div>
@@ -181,12 +232,15 @@
 
 
         <!-- Submit -->
+
         <button type="submit">
             Submit Incident Report
         </button>
 
+
     </form>
 
 </div>
+
 
 <?php require_once "views/partials/footer.php"; ?>

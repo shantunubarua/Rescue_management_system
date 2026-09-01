@@ -38,6 +38,16 @@
             </p>
 
             <p>
+    <strong>Damage Level:</strong>
+
+    <?php
+    echo htmlspecialchars(
+        ucfirst($report['damage_level'] ?? 'Not specified')
+    );
+    ?>
+</p>
+
+            <p>
                 <strong>Location:</strong>
                 <?php echo htmlspecialchars($report['location']); ?>
             </p>

@@ -249,6 +249,7 @@ if ($page === 'login') {
     $error = '';
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
         $error = handleCreateNotification($conn);
     }
 
@@ -355,6 +356,63 @@ if ($page === 'login') {
     requireWitness();
 
     require_once "views/witness/dashboard.php";
+
+
+/*
+|--------------------------------------------------------------------------
+| WITNESS CREATE DONATION
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'donation-create') {
+
+    requireWitness();
+
+    require_once "controllers/DonationController.php";
+
+    $error = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $error = handleCreateDonation($conn);
+    }
+
+    require_once "views/witness/create_donation.php";
+
+
+/*
+|--------------------------------------------------------------------------
+| WITNESS DONATIONS
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'donations') {
+
+    requireWitness();
+
+    require_once "models/DonationModel.php";
+
+    /*
+     * Get logged-in Witness ID
+     */
+
+    $witness_id =
+        (int)($_SESSION['user']['id'] ?? 0);
+
+    if ($witness_id <= 0) {
+        die("Invalid witness account.");
+    }
+
+    /*
+     * Get donations created by this Witness
+     */
+
+    $donations = getWitnessDonations(
+        $conn,
+        $witness_id
+    );
+
+    require_once "views/witness/donations.php";
 
 
 /*
@@ -475,17 +533,14 @@ if ($page === 'login') {
     $volunteer_id =
         (int)($_SESSION['user']['id'] ?? 0);
 
+    if ($volunteer_id <= 0) {
+        die("Invalid volunteer account.");
+    }
+
     $requests = getVolunteerResourceRequests(
         $conn,
         $volunteer_id
     );
-
-    /*
-     * IMPORTANT:
-     * আমরা আলাদা resource_requests.php রাখছি না।
-     * একই resource_request.php route অনুযায়ী
-     * form অথবা My Resource Requests দেখাবে।
-     */
 
     require_once "views/volunteer/resource_request.php";
 
@@ -598,14 +653,26 @@ if ($page === 'login') {
     }
 
     require_once "views/helpseeker/create_request.php";
-}
-elseif ($page === 'helpseeker-requests') {
+
+
+/*
+|--------------------------------------------------------------------------
+| HELP SEEKER REQUESTS
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'helpseeker-requests') {
 
     requireHelpSeeker();
 
     require_once "models/HelpSeekerModel.php";
 
-    $help_seeker_id = (int)$_SESSION['user']['id'];
+    $help_seeker_id =
+        (int)($_SESSION['user']['id'] ?? 0);
+
+    if ($help_seeker_id <= 0) {
+        die("Invalid help seeker account.");
+    }
 
     $requests = getHelpSeekerRequests(
         $conn,
@@ -613,9 +680,15 @@ elseif ($page === 'helpseeker-requests') {
     );
 
     require_once "views/helpseeker/requests.php";
-}
 
-elseif ($page === 'helpseeker-request-view') {
+
+/*
+|--------------------------------------------------------------------------
+| HELP SEEKER REQUEST VIEW
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'helpseeker-request-view') {
 
     requireHelpSeeker();
 
@@ -625,10 +698,15 @@ elseif ($page === 'helpseeker-request-view') {
         ? (int)$_GET['id']
         : 0;
 
-    $help_seeker_id = (int)$_SESSION['user']['id'];
+    $help_seeker_id =
+        (int)($_SESSION['user']['id'] ?? 0);
 
     if ($request_id <= 0) {
         die("Invalid emergency request ID.");
+    }
+
+    if ($help_seeker_id <= 0) {
+        die("Invalid help seeker account.");
     }
 
     $request = getHelpSeekerRequestById(
@@ -642,8 +720,15 @@ elseif ($page === 'helpseeker-request-view') {
     }
 
     require_once "views/helpseeker/view_request.php";
-}
-elseif ($page === 'helpseeker-feedback') {
+
+
+/*
+|--------------------------------------------------------------------------
+| HELP SEEKER FEEDBACK
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'helpseeker-feedback') {
 
     requireHelpSeeker();
 
@@ -654,55 +739,15 @@ elseif ($page === 'helpseeker-feedback') {
         ? (int)$_GET['id']
         : (int)($_POST['rescue_request_id'] ?? 0);
 
-    $help_seeker_id = (int)$_SESSION['user']['id'];
+    $help_seeker_id =
+        (int)($_SESSION['user']['id'] ?? 0);
 
     if ($request_id <= 0) {
         die("Invalid emergency request ID.");
     }
 
-    $request = getHelpSeekerRequestById(
-        $conn,
-        $request_id,
-        $help_seeker_id
-    );
-
-    if (!$request) {
-        die("Emergency request not found.");
-    }
-
-    /*
-     * Feedback can only be submitted
-     * after rescue is completed.
-     */
-    if (($request['status'] ?? '') !== 'completed') {
-        die("Feedback can only be submitted after the rescue is completed.");
-    }
-
-    $error = '';
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-        $error = handleCreateFeedback($conn);
-
-    }
-
-    require_once "views/helpseeker/feedback.php";
-}
-elseif ($page === 'helpseeker-feedback') {
-
-    requireHelpSeeker();
-
-    require_once "models/HelpSeekerModel.php";
-    require_once "controllers/FeedbackController.php";
-
-    $request_id = isset($_GET['id'])
-        ? (int)$_GET['id']
-        : (int)($_POST['rescue_request_id'] ?? 0);
-
-    $help_seeker_id = (int)$_SESSION['user']['id'];
-
-    if ($request_id <= 0) {
-        die("Invalid emergency request ID.");
+    if ($help_seeker_id <= 0) {
+        die("Invalid help seeker account.");
     }
 
     $request = getHelpSeekerRequestById(
@@ -716,7 +761,10 @@ elseif ($page === 'helpseeker-feedback') {
     }
 
     if (($request['status'] ?? '') !== 'completed') {
-        die("Feedback can only be submitted after the rescue is completed.");
+
+        die(
+            "Feedback can only be submitted after the rescue is completed."
+        );
     }
 
     $error = '';
@@ -724,18 +772,18 @@ elseif ($page === 'helpseeker-feedback') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $error = handleCreateFeedback($conn);
-
     }
 
     require_once "views/helpseeker/feedback.php";
-}
+
+
 /*
 |--------------------------------------------------------------------------
 | WITNESS CREATE REPORT
 |--------------------------------------------------------------------------
 */
 
- elseif ($page === 'witness-report-create') {
+} elseif ($page === 'witness-report-create') {
 
     requireWitness();
 
@@ -764,7 +812,11 @@ elseif ($page === 'helpseeker-feedback') {
     require_once "models/WitnessModel.php";
 
     $witness_id =
-        (int)$_SESSION['user']['id'];
+        (int)($_SESSION['user']['id'] ?? 0);
+
+    if ($witness_id <= 0) {
+        die("Invalid witness account.");
+    }
 
     $reports = getWitnessReports(
         $conn,
@@ -787,11 +839,15 @@ elseif ($page === 'helpseeker-feedback') {
     require_once "models/WitnessModel.php";
 
     $witness_id =
-        (int)$_SESSION['user']['id'];
+        (int)($_SESSION['user']['id'] ?? 0);
 
     $report_id = isset($_GET['id'])
         ? (int)$_GET['id']
         : 0;
+
+    if ($witness_id <= 0) {
+        die("Invalid witness account.");
+    }
 
     if ($report_id <= 0) {
         die("Invalid report ID.");
@@ -832,7 +888,11 @@ elseif ($page === 'helpseeker-feedback') {
     }
 
     $witness_id =
-        (int)$_SESSION['user']['id'];
+        (int)($_SESSION['user']['id'] ?? 0);
+
+    if ($witness_id <= 0) {
+        die("Invalid witness account.");
+    }
 
     $report = getWitnessReportById(
         $conn,
@@ -867,6 +927,14 @@ elseif ($page === 'helpseeker-feedback') {
             $_POST['title']
             ?? $report['title'];
 
+        $report['description'] =
+            $_POST['description']
+            ?? $report['description'];
+
+        $report['damage_level'] =
+            $_POST['damage_level']
+            ?? $report['damage_level'];
+
         $report['incident_type'] =
             $_POST['incident_type']
             ?? $report['incident_type'];
@@ -878,10 +946,6 @@ elseif ($page === 'helpseeker-feedback') {
         $report['incident_date'] =
             $_POST['incident_date']
             ?? $report['incident_date'];
-
-        $report['description'] =
-            $_POST['description']
-            ?? $report['description'];
     }
 
     require_once "views/witness/edit_report.php";
@@ -904,10 +968,14 @@ elseif ($page === 'helpseeker-feedback') {
     require_once "models/WitnessModel.php";
 
     $witness_id =
-        (int)$_SESSION['user']['id'];
+        (int)($_SESSION['user']['id'] ?? 0);
 
     $report_id =
         (int)($_POST['id'] ?? 0);
+
+    if ($witness_id <= 0) {
+        die("Invalid witness account.");
+    }
 
     if ($report_id <= 0) {
         die("Invalid report ID.");
@@ -937,6 +1005,8 @@ elseif ($page === 'helpseeker-feedback') {
 */
 
 } else {
+
+    http_response_code(404);
 
     echo "Page not found.";
 }
