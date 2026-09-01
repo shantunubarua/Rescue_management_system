@@ -11,7 +11,6 @@ $role = $_SESSION['user']['role'] ?? '';
         <h2>Admin Panel</h2>
 
         <ul>
-            
 
             <li>
                 <a href="index.php?page=admin-dashboard">
@@ -53,90 +52,143 @@ $role = $_SESSION['user']['role'] ?? '';
         <ul>
 
             <li>
-    <a href="index.php?page=witness-dashboard">
-        Dashboard
-    </a>
-</li>
+                <a href="index.php?page=witness-dashboard">
+                    Dashboard
+                </a>
+            </li>
+
 
             <li>
                 <a href="index.php?page=witness-report-create">
                     Report Incident
                 </a>
             </li>
+
+
             <li>
-    <a href="index.php?page=witness-reports">
-        My Reports
-    </a>
-</li>
+                <a href="index.php?page=witness-reports">
+                    My Reports
+                </a>
+            </li>
+
+
+            <!-- DONATION CREATE -->
+
+            <li>
+                <a href="index.php?page=donation-create">
+                    Make Donation
+                </a>
+            </li>
+
+
+            <!-- MY DONATIONS -->
+
+            <li>
+                <a href="index.php?page=donations">
+                    My Donations
+                </a>
+            </li>
+
 
             <li>
                 <a href="index.php?page=logout">
                     Logout
                 </a>
             </li>
-        
 
         </ul>
 
-<?php elseif ($role === 'volunteer'): ?>
 
-    <h2>Volunteer Panel</h2>
+    <?php elseif ($role === 'volunteer'): ?>
 
-    <ul>
+        <h2>Volunteer Panel</h2>
 
-        <li>
-            <a href="index.php?page=volunteer-dashboard">
-                Dashboard
-            </a>
-        </li>
+        <ul>
 
-       <li>
-    <a href="index.php?page=volunteer-emergency-requests">
-        Emergency Requests
-    </a>
-    </li>
-
-      <li>
-    <a href="index.php?page=volunteer-activities">
-        My Rescue Activities
-    </a>
-</li>
-<li>
-    <a href="index.php?page=volunteer-profile">
-        My Profile
-    </a>
-</li>
-<li>
-    <a href="index.php?page=volunteer-availability">
-        My Availability
-    </a>
-</li>
-<li>
-    <a href="index.php?page=volunteer-resource-request">
-        Resource Request
-    </a>
-</li>
+            <li>
+                <a href="index.php?page=volunteer-dashboard">
+                    Dashboard
+                </a>
+            </li>
 
 
-<li>
-    <a href="index.php?page=volunteer-resource-requests">
-        My Resource Requests
-    </a>
-</li>
+            <li>
+                <a href="index.php?page=volunteer-emergency-requests">
+                    Emergency Requests
+                </a>
+            </li>
 
-        <li>
-            <a href="index.php?page=logout">
-                Logout
-            </a>
-        </li>
 
-    </ul>
+            <li>
+                <a href="index.php?page=volunteer-activities">
+                    My Rescue Activities
+                </a>
+            </li>
+
+
+            <li>
+                <a href="index.php?page=volunteer-profile">
+                    My Profile
+                </a>
+            </li>
+
+
+            <li>
+                <a href="index.php?page=volunteer-availability">
+                    My Availability
+                </a>
+            </li>
+
+
+            <li>
+                <a href="index.php?page=volunteer-resource-request">
+                    Resource Request
+                </a>
+            </li>
+
+
+            <li>
+                <a href="index.php?page=volunteer-resource-requests">
+                    My Resource Requests
+                </a>
+            </li>
+
+
+            <li>
+                <a href="index.php?page=logout">
+                    Logout
+                </a>
+            </li>
+
+        </ul>
+
 
     <?php elseif ($role === 'help_seeker'): ?>
 
         <h2>Help Seeker Panel</h2>
 
         <ul>
+
+            <li>
+                <a href="index.php?page=helpseeker-dashboard">
+                    Dashboard
+                </a>
+            </li>
+
+
+            <li>
+                <a href="index.php?page=helpseeker-request-create">
+                    Create Emergency Request
+                </a>
+            </li>
+
+
+            <li>
+                <a href="index.php?page=helpseeker-requests">
+                    My Emergency Requests
+                </a>
+            </li>
+
 
             <li>
                 <a href="index.php?page=logout">

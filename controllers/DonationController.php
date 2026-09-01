@@ -5,48 +5,63 @@ require_once "models/DonationModel.php";
 
 /*
 |--------------------------------------------------------------------------
-| Create Donation
+| Generate Transaction ID
 |--------------------------------------------------------------------------
+|
+| Example:
+| TXN6a871d2cad444
+|
+*/
+
+function generateDonationTransactionId()
+{
+    return 'TXN' . substr(
+        bin2hex(random_bytes(7)),
+        0,
+        13
+    );
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Prepare Donation
+|--------------------------------------------------------------------------
+|
+| Step 1:
+| Witness enters donation information.
+|
+| We DO NOT save to database yet.
+| Data is stored temporarily in session.
+|
 */
 
 function handleCreateDonation($conn)
 {
-    /*
-     * Get form data
-     */
-
     $amount =
         trim($_POST['amount'] ?? '');
 
     $donation_type =
         trim($_POST['donation_type'] ?? '');
 
-    $payment_method =
-        trim($_POST['payment_method'] ?? '');
-
     $message =
         trim($_POST['message'] ?? '');
 
 
     /*
-     |--------------------------------------------------------------------------
-     | Required Fields Validation
-     |--------------------------------------------------------------------------
+     * Required Fields
      */
 
     if (
         $amount === '' ||
-        $donation_type === '' ||
-        $payment_method === ''
+        $donation_type === ''
     ) {
         return "All required fields must be completed.";
     }
 
 
     /*
-     |--------------------------------------------------------------------------
-     | Amount Validation
-     |--------------------------------------------------------------------------
+     * Amount Validation
      */
 
     if (
@@ -60,9 +75,7 @@ function handleCreateDonation($conn)
 
 
     /*
-     |--------------------------------------------------------------------------
-     | Donation Type Validation
-     |--------------------------------------------------------------------------
+     * Donation Type Validation
      */
 
     $allowed_types = [
@@ -85,33 +98,7 @@ function handleCreateDonation($conn)
 
 
     /*
-     |--------------------------------------------------------------------------
-     | Payment Method Validation
-     |--------------------------------------------------------------------------
-     */
-
-    $allowed_payment_methods = [
-        'cash',
-        'card',
-        'bkash',
-        'bank'
-    ];
-
-    if (
-        !in_array(
-            $payment_method,
-            $allowed_payment_methods,
-            true
-        )
-    ) {
-        return "Invalid payment method.";
-    }
-
-
-    /*
-     |--------------------------------------------------------------------------
-     | Get Logged-in Witness ID
-     |--------------------------------------------------------------------------
+     * Logged-in Witness
      */
 
     $witness_id =
@@ -125,9 +112,160 @@ function handleCreateDonation($conn)
 
 
     /*
-     |--------------------------------------------------------------------------
-     | Save Donation
-     |--------------------------------------------------------------------------
+     * Store Donation Temporarily
+     */
+
+    $_SESSION['pending_donation'] = [
+        'witness_id' => $witness_id,
+        'amount' => $amount,
+        'donation_type' => $donation_type,
+        'message' => $message
+    ];
+
+
+    /*
+     * Go To Payment Page
+     */
+
+    header(
+        "Location: index.php?page=donation-payment"
+    );
+
+    exit;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Confirm Donation Payment
+|--------------------------------------------------------------------------
+|
+| Step 2:
+| Witness selects payment method.
+|
+| Then:
+| - Generate transaction ID
+| - Save donation
+| - Remove temporary session data
+|
+*/
+
+function handleConfirmDonation($conn)
+{
+    /*
+     * Check Pending Donation
+     */
+
+    if (
+        empty($_SESSION['pending_donation']) ||
+        !is_array($_SESSION['pending_donation'])
+    ) {
+        return "No pending donation found.";
+    }
+
+
+    $pending =
+        $_SESSION['pending_donation'];
+
+
+    /*
+     * Payment Method
+     */
+
+    $payment_method =
+        trim($_POST['payment_method'] ?? '');
+
+
+    if ($payment_method === '') {
+        return "Please select a payment method.";
+    }
+
+
+    /*
+     * Allowed Payment Methods
+     */
+
+    $allowed_payment_methods = [
+        'card',
+        'bkash',
+        'nagad',
+        'bank',
+        'cash'
+    ];
+
+
+    if (
+        !in_array(
+            $payment_method,
+            $allowed_payment_methods,
+            true
+        )
+    ) {
+        return "Invalid payment method.";
+    }
+
+
+    /*
+     * Get Donation Information
+     */
+
+    $witness_id =
+        (int)($pending['witness_id'] ?? 0);
+
+    $amount =
+        (float)($pending['amount'] ?? 0);
+
+    $donation_type =
+        trim($pending['donation_type'] ?? '');
+
+    $message =
+        trim($pending['message'] ?? '');
+
+
+    if (
+        $witness_id <= 0 ||
+        $amount <= 0 ||
+        $donation_type === ''
+    ) {
+        return "Invalid donation information.";
+    }
+
+
+    /*
+     * Security Check:
+     * Ensure current logged-in Witness
+     * is the same Witness who started donation.
+     */
+
+    $logged_in_witness_id =
+        (int)(
+            $_SESSION['user']['id'] ?? 0
+        );
+
+
+    if (
+        $logged_in_witness_id <= 0 ||
+        $logged_in_witness_id !== $witness_id
+    ) {
+        unset($_SESSION['pending_donation']);
+
+        return "Invalid witness account.";
+    }
+
+
+    /*
+     * Generate Unique-looking Transaction ID
+     *
+     * Example:
+     * TXN6a871d2cad444
+     */
+
+    $transaction_id =
+        generateDonationTransactionId();
+
+
+    /*
+     * Save Donation To Database
      */
 
     $success = createDonation(
@@ -136,24 +274,32 @@ function handleCreateDonation($conn)
         $amount,
         $donation_type,
         $payment_method,
+        $transaction_id,
         $message
     );
 
-    if ($success) {
 
-        header(
-            "Location: index.php?page=donations"
-        );
-
-        exit;
+    if (!$success) {
+        return "Failed to complete donation.";
     }
 
 
     /*
-     |--------------------------------------------------------------------------
-     | Database Error
-     |--------------------------------------------------------------------------
+     * Remove Temporary Donation
      */
 
-    return "Failed to create donation.";
+    unset(
+        $_SESSION['pending_donation']
+    );
+
+
+    /*
+     * Go To My Donations
+     */
+
+    header(
+        "Location: index.php?page=donations"
+    );
+
+    exit;
 }

@@ -7,7 +7,7 @@
     <h1>Make a Donation</h1>
 
     <p>
-        Support rescue and relief activities by making a donation.
+        Enter your donation information and continue to payment.
     </p>
 
 
@@ -25,7 +25,8 @@
         action="index.php?page=donation-create"
     >
 
-        <!-- Amount -->
+        <!-- Donation Amount -->
+
         <div>
 
             <label for="amount">
@@ -54,6 +55,7 @@
 
 
         <!-- Donation Type -->
+
         <div>
 
             <label for="donation_type">
@@ -72,6 +74,7 @@
                     Select Donation Type
                 </option>
 
+
                 <option
                     value="money"
                     <?php
@@ -83,6 +86,7 @@
                 >
                     Money
                 </option>
+
 
                 <option
                     value="food"
@@ -96,6 +100,7 @@
                     Food
                 </option>
 
+
                 <option
                     value="medicine"
                     <?php
@@ -108,6 +113,7 @@
                     Medicine
                 </option>
 
+
                 <option
                     value="clothes"
                     <?php
@@ -119,6 +125,7 @@
                 >
                     Clothes
                 </option>
+
 
                 <option
                     value="other"
@@ -139,81 +146,8 @@
         <br>
 
 
-        <!-- Payment Method -->
-        <div>
-
-            <label for="payment_method">
-                Payment Method *
-            </label>
-
-            <br>
-
-            <select
-                id="payment_method"
-                name="payment_method"
-                required
-            >
-
-                <option value="">
-                    Select Payment Method
-                </option>
-
-                <option
-                    value="cash"
-                    <?php
-                    echo (
-                        ($_POST['payment_method'] ?? '')
-                        === 'cash'
-                    ) ? 'selected' : '';
-                    ?>
-                >
-                    Cash
-                </option>
-
-                <option
-                    value="card"
-                    <?php
-                    echo (
-                        ($_POST['payment_method'] ?? '')
-                        === 'card'
-                    ) ? 'selected' : '';
-                    ?>
-                >
-                    Card
-                </option>
-
-                <option
-                    value="bkash"
-                    <?php
-                    echo (
-                        ($_POST['payment_method'] ?? '')
-                        === 'bkash'
-                    ) ? 'selected' : '';
-                    ?>
-                >
-                    bKash
-                </option>
-
-                <option
-                    value="bank"
-                    <?php
-                    echo (
-                        ($_POST['payment_method'] ?? '')
-                        === 'bank'
-                    ) ? 'selected' : '';
-                    ?>
-                >
-                    Bank
-                </option>
-
-            </select>
-
-        </div>
-
-        <br>
-
-
         <!-- Message -->
+
         <div>
 
             <label for="message">
@@ -226,7 +160,8 @@
                 id="message"
                 name="message"
                 rows="5"
-                cols="50"
+                maxlength="500"
+                placeholder="Write an optional message..."
             ><?php
                 echo htmlspecialchars(
                     $_POST['message'] ?? ''
@@ -238,12 +173,22 @@
         <br>
 
 
-        <!-- Submit -->
+        <!-- Continue -->
+
         <button type="submit">
-            Submit Donation
+            Continue to Payment
         </button>
 
     </form>
+
+
+    <br>
+
+    <p>
+        <a href="index.php?page=donations">
+            View My Donations
+        </a>
+    </p>
 
 </div>
 

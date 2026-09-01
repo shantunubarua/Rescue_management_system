@@ -355,7 +355,56 @@ if ($page === 'login') {
 
     requireWitness();
 
+    require_once "models/WitnessDashboardModel.php";
+
+
+    $witness_id =
+        (int)($_SESSION['user']['id'] ?? 0);
+
+
+    if ($witness_id <= 0) {
+
+        die("Invalid witness account.");
+    }
+
+
+    /*
+     * Dashboard Overview
+     */
+
+    $dashboardCounts =
+        getWitnessDashboardCounts(
+            $conn,
+            $witness_id
+        );
+
+
+    /*
+     * Recent Reports
+     */
+
+    $recentReports =
+        getRecentWitnessReports(
+            $conn,
+            $witness_id,
+            5
+        );
+
+
+    /*
+     * Recent Donations
+     */
+
+    $recentDonations =
+        getRecentWitnessDonations(
+            $conn,
+            $witness_id,
+            5
+        );
+
+
     require_once "views/witness/dashboard.php";
+
 
 
 /*
@@ -382,6 +431,51 @@ if ($page === 'login') {
 
 /*
 |--------------------------------------------------------------------------
+| WITNESS DONATION PAYMENT
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'donation-payment') {
+
+    requireWitness();
+
+    require_once "controllers/DonationController.php";
+
+    $error = '';
+
+    /*
+     * Payment page should only open
+     * when a pending donation exists.
+     */
+
+    if (
+        empty($_SESSION['pending_donation']) ||
+        !is_array($_SESSION['pending_donation'])
+    ) {
+
+        header(
+            "Location: index.php?page=donation-create"
+        );
+
+        exit;
+    }
+
+
+    /*
+     * Confirm Payment
+     */
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $error = handleConfirmDonation($conn);
+    }
+
+
+    require_once "views/witness/donation_payment.php";
+
+
+/*
+|--------------------------------------------------------------------------
 | WITNESS DONATIONS
 |--------------------------------------------------------------------------
 */
@@ -392,30 +486,24 @@ if ($page === 'login') {
 
     require_once "models/DonationModel.php";
 
-    /*
-     * Get logged-in Witness ID
-     */
-
     $witness_id =
         (int)($_SESSION['user']['id'] ?? 0);
 
     if ($witness_id <= 0) {
+
         die("Invalid witness account.");
     }
 
-    /*
-     * Get donations created by this Witness
-     */
 
     $donations = getWitnessDonations(
         $conn,
         $witness_id
     );
 
+
     require_once "views/witness/donations.php";
 
-
-/*
+    /*
 |--------------------------------------------------------------------------
 | VOLUNTEER DASHBOARD
 |--------------------------------------------------------------------------

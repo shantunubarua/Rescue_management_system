@@ -12,6 +12,7 @@ function createDonation(
     $amount,
     $donation_type,
     $payment_method,
+    $transaction_id,
     $message
 ) {
     $sql = "INSERT INTO donations
@@ -20,24 +21,26 @@ function createDonation(
                 amount,
                 donation_type,
                 payment_method,
+                transaction_id,
                 message,
                 status
             )
-            VALUES (?, ?, ?, ?, ?, 'pending')";
+            VALUES (?, ?, ?, ?, ?, ?, 'pending')";
 
     $stmt = mysqli_prepare($conn, $sql);
 
-    if ($stmt === false) {
+    if (!$stmt) {
         return false;
     }
 
     mysqli_stmt_bind_param(
         $stmt,
-        "idsss",
+        "idssss",
         $witness_id,
         $amount,
         $donation_type,
         $payment_method,
+        $transaction_id,
         $message
     );
 
@@ -51,7 +54,7 @@ function createDonation(
 
 /*
 |--------------------------------------------------------------------------
-| Get All Donations of Logged-in Witness
+| Get Witness Donations
 |--------------------------------------------------------------------------
 */
 
@@ -65,6 +68,7 @@ function getWitnessDonations(
                 amount,
                 donation_type,
                 payment_method,
+                transaction_id,
                 message,
                 status,
                 created_at
@@ -74,7 +78,7 @@ function getWitnessDonations(
 
     $stmt = mysqli_prepare($conn, $sql);
 
-    if ($stmt === false) {
+    if (!$stmt) {
         return [];
     }
 
@@ -90,11 +94,8 @@ function getWitnessDonations(
 
     $donations = [];
 
-    if ($result) {
-
-        while ($row = mysqli_fetch_assoc($result)) {
-            $donations[] = $row;
-        }
+    while ($row = mysqli_fetch_assoc($result)) {
+        $donations[] = $row;
     }
 
     mysqli_stmt_close($stmt);
@@ -105,7 +106,7 @@ function getWitnessDonations(
 
 /*
 |--------------------------------------------------------------------------
-| Get Single Donation By ID
+| Get Donation By ID
 |--------------------------------------------------------------------------
 */
 
@@ -120,6 +121,7 @@ function getDonationById(
                 amount,
                 donation_type,
                 payment_method,
+                transaction_id,
                 message,
                 status,
                 created_at
@@ -130,7 +132,7 @@ function getDonationById(
 
     $stmt = mysqli_prepare($conn, $sql);
 
-    if ($stmt === false) {
+    if (!$stmt) {
         return null;
     }
 
@@ -145,11 +147,7 @@ function getDonationById(
 
     $result = mysqli_stmt_get_result($stmt);
 
-    $donation = null;
-
-    if ($result) {
-        $donation = mysqli_fetch_assoc($result);
-    }
+    $donation = mysqli_fetch_assoc($result);
 
     mysqli_stmt_close($stmt);
 

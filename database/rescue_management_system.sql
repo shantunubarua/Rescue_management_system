@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 01, 2026 at 09:09 AM
+-- Generation Time: Sep 01, 2026 at 10:45 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -33,6 +33,7 @@ CREATE TABLE `donations` (
   `amount` decimal(10,2) NOT NULL,
   `donation_type` varchar(100) NOT NULL,
   `payment_method` varchar(50) NOT NULL,
+  `transaction_id` varchar(100) NOT NULL,
   `message` text DEFAULT NULL,
   `status` enum('pending','completed','cancelled') NOT NULL DEFAULT 'pending',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
@@ -42,13 +43,15 @@ CREATE TABLE `donations` (
 -- Dumping data for table `donations`
 --
 
-INSERT INTO `donations` (`id`, `witness_id`, `amount`, `donation_type`, `payment_method`, `message`, `status`, `created_at`) VALUES
-(1, 2, 300.00, 'money', 'bkash', 'good luck', 'pending', '2026-09-01 05:31:15'),
-(2, 2, 300.00, 'money', 'bkash', 'good luck', 'pending', '2026-09-01 05:31:28'),
-(3, 2, 300.00, 'money', 'bkash', 'good luck', 'pending', '2026-09-01 05:48:24'),
-(4, 2, 300.00, 'money', 'bkash', 'good luck', 'pending', '2026-09-01 05:53:52'),
-(5, 2, 300.00, 'money', 'bkash', 'good luck', 'pending', '2026-09-01 05:54:01'),
-(6, 2, 300.00, 'money', 'card', 'good initiative', 'pending', '2026-09-01 06:47:02');
+INSERT INTO `donations` (`id`, `witness_id`, `amount`, `donation_type`, `payment_method`, `transaction_id`, `message`, `status`, `created_at`) VALUES
+(1, 2, 300.00, 'money', 'bkash', 'TXN0000000000001', 'good luck', 'pending', '2026-09-01 05:31:15'),
+(2, 2, 300.00, 'money', 'bkash', 'TXN0000000000002', 'good luck', 'pending', '2026-09-01 05:31:28'),
+(3, 2, 300.00, 'money', 'bkash', 'TXN0000000000003', 'good luck', 'pending', '2026-09-01 05:48:24'),
+(4, 2, 300.00, 'money', 'bkash', 'TXN0000000000004', 'good luck', 'pending', '2026-09-01 05:53:52'),
+(5, 2, 300.00, 'money', 'bkash', 'TXN0000000000005', 'good luck', 'pending', '2026-09-01 05:54:01'),
+(6, 2, 300.00, 'money', 'card', 'TXN0000000000006', 'good initiative', 'pending', '2026-09-01 06:47:02'),
+(7, 2, 100.00, 'money', 'cash', 'TXN453f3943bf9cd', 'keep up the good work', 'pending', '2026-09-01 08:02:35'),
+(8, 2, 200.00, 'medicine', 'bank', 'TXN881b6d1b13c52', 'good', 'pending', '2026-09-01 08:05:43');
 
 -- --------------------------------------------------------
 
@@ -248,6 +251,7 @@ INSERT INTO `witness_reports` (`id`, `witness_id`, `title`, `description`, `dama
 --
 ALTER TABLE `donations`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_transaction_id` (`transaction_id`),
   ADD KEY `donor_id` (`witness_id`);
 
 --
@@ -313,7 +317,7 @@ ALTER TABLE `witness_reports`
 -- AUTO_INCREMENT for table `donations`
 --
 ALTER TABLE `donations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `emergency_requests`
