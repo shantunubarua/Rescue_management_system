@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 01, 2026 at 02:51 PM
+-- Generation Time: Sep 01, 2026 at 05:25 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -231,6 +231,7 @@ CREATE TABLE `witness_reports` (
   `witness_id` int(11) NOT NULL,
   `title` varchar(150) NOT NULL,
   `description` text NOT NULL,
+  `damage_level` varchar(20) NOT NULL DEFAULT 'low',
   `incident_type` varchar(50) NOT NULL,
   `location` varchar(255) NOT NULL,
   `incident_date` datetime NOT NULL,
@@ -244,8 +245,12 @@ CREATE TABLE `witness_reports` (
 -- Dumping data for table `witness_reports`
 --
 
-INSERT INTO `witness_reports` (`id`, `witness_id`, `title`, `description`, `incident_type`, `location`, `incident_date`, `evidence_file`, `status`, `created_at`, `updated_at`) VALUES
-(1, 2, 'Accident', 'Near kuril', 'accident', 'kuril', '2026-08-22 14:00:00', NULL, 'pending', '2026-08-22 10:36:42', '2026-08-22 10:36:42');
+INSERT INTO `witness_reports` (`id`, `witness_id`, `title`, `description`, `damage_level`, `incident_type`, `location`, `incident_date`, `evidence_file`, `status`, `created_at`, `updated_at`) VALUES
+(2, 2, 'Car Accident', 'Car vs Bike Clash', 'low', 'accident', 'Kuril', '2026-08-29 00:00:00', NULL, 'pending', '2026-08-29 10:39:46', '2026-08-29 10:39:46'),
+(3, 2, 'Road Accident', 'A road accident occurred near the main road', 'low', 'accident', 'Main Road', '2026-08-29 00:00:00', NULL, 'pending', '2026-08-29 10:42:18', '2026-08-29 10:42:18'),
+(4, 2, 'Flood', 'Flood at feni', 'low', 'flood', 'Feni', '2026-12-12 00:00:00', NULL, 'pending', '2026-08-29 10:47:35', '2026-08-29 10:47:35'),
+(5, 2, 'Medical Emergency', 'Suicide', 'low', 'medical', 'Jatrabari', '2026-12-11 00:00:00', 'uploads/witness/witness_2_1788000957_6a92babd16d2b.jpeg', 'pending', '2026-08-29 10:55:57', '2026-08-29 10:55:57'),
+(6, 2, 'Gas leakage', 'At residential area', 'medium', 'other', 'Puran Dhaka', '2026-09-01 00:00:00', NULL, 'pending', '2026-09-01 03:42:30', '2026-09-01 03:42:30');
 
 --
 -- Indexes for dumped tables
