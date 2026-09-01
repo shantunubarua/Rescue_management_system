@@ -35,6 +35,11 @@ $role = $_SESSION['user']['role'] ?? '';
                     Rescue Reports
                 </a>
             </li>
+            <li>
+             <a href="index.php?page=admin-resource-requests">
+                    Resource Requests
+            </a>
+            </li>
 
             <li>
                 <a href="index.php?page=logout">
