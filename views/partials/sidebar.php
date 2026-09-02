@@ -168,41 +168,38 @@ $role = $_SESSION['user']['role'] ?? '';
         </ul>
 
 
-    <?php elseif ($role === 'help_seeker'): ?>
+   <?php elseif ($role === 'help_seeker'): ?>
 
-        <h2>Help Seeker Panel</h2>
+    <h2>Help Seeker Panel</h2>
 
-        <ul>
+    <ul>
 
-            <li>
-                <a href="index.php?page=helpseeker-dashboard">
-                    Dashboard
-                </a>
-            </li>
+        <li>
+            <a href="index.php?page=helpseeker-dashboard">
+                Dashboard
+            </a>
+        </li>
 
+        <li>
+            <a href="index.php?page=helpseeker-request-create">
+                Request Rescue
+            </a>
+        </li>
 
-            <li>
-                <a href="index.php?page=helpseeker-request-create">
-                    Create Emergency Request
-                </a>
-            </li>
+        <li>
+            <a href="index.php?page=helpseeker-requests">
+                My Requests
+            </a>
+        </li>
 
+        <li>
+            <a href="index.php?page=logout">
+                Logout
+            </a>
+        </li>
 
-            <li>
-                <a href="index.php?page=helpseeker-requests">
-                    My Emergency Requests
-                </a>
-            </li>
+    </ul>
 
-
-            <li>
-                <a href="index.php?page=logout">
-                    Logout
-                </a>
-            </li>
-
-        </ul>
-
-    <?php endif; ?>
+<?php endif; ?>
 
 </div>
